@@ -1,16 +1,26 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('merchantToken');
+    navigate('/', { replace: true });
+  };
+
   return (
-    <aside className="sidebar">
-      <nav>
-        <ul>
-          <li><Link to="/">Dashboard</Link></li>
-          <li><Link to="/create-order">Create Order</Link></li>
-        </ul>
-      </nav>
-    </aside>
+    <div style={{ width: '200px', background: '#f4f4f4', padding: '1rem', height: '100vh' }}>
+      <h3>Merchant Menu</h3>
+      <ul>
+        <li>
+          <Link to="/dashboard">Dashboard</Link>
+        </li>
+        <li>
+          <button onClick={handleLogout}>Logout</button>
+        </li>
+      </ul>
+    </div>
   );
 };
 

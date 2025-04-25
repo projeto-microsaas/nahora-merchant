@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
-const Dashboard = ({ token, setToken }) => {
+import React, { useState, useEffect } from 'react';
+import api from './api';
+
+const Dashboard = () => {
   const [orders, setOrders] = useState([]);
+  const [error, setError] = useState('');
   const [client, setClient] = useState('');
   const [description, setDescription] = useState('');
   const [value, setValue] = useState('');
@@ -10,51 +12,36 @@ const Dashboard = ({ token, setToken }) => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/orders', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await api.get('/api/orders');
         setOrders(response.data);
       } catch (err) {
-        console.error('Error fetching orders:', err);
+        setError(err.response?.data?.message || 'Failed to fetch orders');
       }
     };
     fetchOrders();
-  }, [token]);
+  }, []);
 
   const handleCreateOrder = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        'http://localhost:5000/api/orders',
-        {
-          client,
-          description,
-          value: parseFloat(value),
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await api.post('/api/orders', {
+        client,
+        description,
+        value: Number(value),
+      });
       setOrders([...orders, response.data]);
       setClient('');
       setDescription('');
       setValue('');
     } catch (err) {
-      console.error('Error creating order:', err);
+      setError(err.response?.data?.message || 'Failed to create order');
     }
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setToken('');
   };
 
   return (
     <div>
       <h2>Merchant Dashboard</h2>
-      <button onClick={handleLogout}>Logout</button>
-
-      <h3>Create Order</h3>
+      <h3>Create New Order</h3>
       <form onSubmit={handleCreateOrder}>
         <div>
           <label>Client:</label>
@@ -83,17 +70,21 @@ const Dashboard = ({ token, setToken }) => {
             required
           />
         </div>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
         <button type="submit">Create Order</button>
       </form>
-
-      <h3>Orders List</h3>
-      <ul>
-        {orders.map((order) => (
-          <li key={order._id}>
-            {order.client} - {order.description} - ${order.value} - Status: {order.status}
-          </li>
-        ))}
-      </ul>
+      <h3>Orders</h3>
+      {orders.length === 0 ? (
+        <p>No orders available.</p>
+      ) : (
+        <ul>
+          {orders.map(order => (
+            <li key={order._id}>
+              {order.client} - {order.description} - ${order.value} - Status: {order.status}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
