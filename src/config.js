@@ -1,1 +1,4 @@
-export const API_BASE_URL = 'http://localhost:5000';
+const config = {
+    apiBaseUrl: "http://localhost:5000/api",
+  };
+  export default config;

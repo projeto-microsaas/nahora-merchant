@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
-import { toast } from "@/components/ui/sonner";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "../components/ui/card";
+import { toast } from "../components/ui/sonner";
 import { login } from "../api/api";
 
 const Index = () => {
   const [email, setEmail] = useState("merchant@example.com");
   const [password, setPassword] = useState("password123");
-  const [role, setRole] = useState("merchant");
+  const [role, setRole] = useState("Comerciante"); // Ajustado para "Comerciante"
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   
-  // Verificar se já existe um token válido
   useEffect(() => {
+    console.log('Verificando token existente no Index...');
     const token = localStorage.getItem("authToken");
+    console.log('Token encontrado:', token);
     if (token) {
+      console.log('Token encontrado, redirecionando para /dashboard');
       navigate("/dashboard");
     }
   }, [navigate]);
@@ -26,13 +28,18 @@ const Index = () => {
     
     try {
       setLoading(true);
+      console.log('Iniciando login com:', { email, password, role });
       
       const response = await login(email, password, role);
+      console.log('Resposta do login:', response.data);
       const { token, user } = response.data;
+      console.log('Token recebido:', token);
+      console.log('Usuário recebido:', user);
       
-      // Armazenar token e dados do usuário
       localStorage.setItem("authToken", token);
       localStorage.setItem("user", JSON.stringify(user));
+      console.log('Token salvo no localStorage:', localStorage.getItem("authToken"));
+      console.log('Usuário salvo no localStorage:', localStorage.getItem("user"));
       
       toast.success("Login realizado com sucesso!");
       navigate("/dashboard");
@@ -83,8 +90,8 @@ const Index = () => {
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
               >
-                <option value="merchant">Comerciante</option>
-                <option value="driver">Motorista</option>
+                <option value="Comerciante">Comerciante</option>
+                <option value="Motorista">Motorista</option>
               </select>
             </div>
             <Button 
