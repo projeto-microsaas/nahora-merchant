@@ -1,108 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import Sidebar from './Sidebar';
-import Dashboard from './Dashboard';
-import './App.css';
+import { Toaster } from "./components/ui/toaster";
+     import { Toaster as Sonner } from "./components/ui/sonner";
+     import { TooltipProvider } from "./components/ui/tooltip";
+     import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+     import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+     import Index from "./pages/Index";
+     import Dashboard from "./pages/Dashboard";
+     import NotFound from "./pages/NotFound";
 
-const Login = (props) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const navigate = useNavigate();
+     const queryClient = new QueryClient();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setError('');
-    setSuccess('');
-    try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
-        email,
-        password,
-        role: 'merchant', // ✅ Adicionado role
-      });
-      const token = response.data.token;
-      localStorage.setItem('merchantToken', token);
-      props.setIsValidToken(true);
-      setSuccess('Login bem-sucedido! Redirecionando...');
-      navigate('/dashboard', { replace: true });
-    } catch (err) {
-      console.error('Login error:', err);
-      setError(err.response?.data?.message || 'Falha no login. Tente novamente.');
-    }
-  };
+     const ProtectedRoute = ({ children }) => {
+       const token = localStorage.getItem("authToken");
+       console.log('Verificando token no ProtectedRoute:', token);
+       if (!token) {
+         console.log('Token não encontrado, redirecionando para /');
+         return <Navigate to="/" replace />;
+       }
+       return children;
+     };
 
-  return (
-    <div className="login-page">
-      <div className="login-image-section">
-        <div className="overlay">
-          <h1>Entregas rápidas e seguras para o seu negócio</h1>
-          <p>Aumente suas vendas com a melhor solução de logística</p>
-        </div>
-      </div>
-      <div className="login-form-section">
-        <div className="login-form-container">
-          <h2>Entrar como Comerciante</h2>
-          <form onSubmit={handleLogin} className="login-form">
-            <div className="form-group">
-              <label>Email:</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Password:</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            {error && <p className="error">{error}</p>}
-            {success && <p className="success">{success}</p>}
-            <button type="submit">Entrar</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  );
-};
+     const App = () => (
+       <QueryClientProvider client={queryClient}>
+         <TooltipProvider>
+           <Toaster />
+           <Sonner />
+           <BrowserRouter>
+             <Routes>
+               <Route path="/" element={<Index />} />
+               <Route
+                 path="/dashboard"
+                 element={
+                   <ProtectedRoute>
+                     <Dashboard />
+                   </ProtectedRoute>
+                 }
+               />
+               <Route path="*" element={<NotFound />} />
+             </Routes>
+           </BrowserRouter>
+         </TooltipProvider>
+       </QueryClientProvider>
+     );
 
-const App = () => {
-  const [isValidToken, setIsValidToken] = useState(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem('merchantToken');
-    setIsValidToken(!!token);
-  }, []);
-
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Login setIsValidToken={setIsValidToken} />} />
-        <Route
-          path="/dashboard"
-          element={
-            isValidToken ? (
-              <div style={{ display: 'flex' }}>
-                <Sidebar />
-                <div style={{ flex: 1 }}>
-                  <Dashboard />
-                </div>
-              </div>
-            ) : (
-              <Login setIsValidToken={setIsValidToken} />
-            )
-          }
-        />
-      </Routes>
-    </Router>
-  );
-};
-
-export default App;
+     export default App;
