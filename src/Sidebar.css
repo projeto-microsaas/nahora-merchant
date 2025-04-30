@@ -1,15 +1,18 @@
 .sidebar {
   width: 200px;
-  background: #1A3C5A;
-  padding: 1.5rem;
+  background-color: #f4f4f4;
+  padding: 20px;
   height: 100vh;
-  color: #FFFFFF;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar h3 {
-  margin-bottom: 2rem;
-  color: #FFFFFF;
-  font-size: 1.25rem;
+  margin-bottom: 20px;
+  font-size: 1.5em;
+  color: #333;
 }
 
 .sidebar ul {
@@ -18,29 +21,33 @@
 }
 
 .sidebar li {
-  margin-bottom: 1rem;
+  margin-bottom: 10px;
 }
 
-.sidebar a {
-  color: #A0AEC0;
-  text-decoration: none;
-  font-size: 1rem;
-  transition: color 0.3s ease;
-}
-
-.sidebar a:hover {
-  color: #F6A623; /* Laranja no hover do link */
-}
-
+.sidebar a,
 .sidebar button {
-  background: none;
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: #007bff;
+  background-color: #fff;
+  border-radius: 5px;
   border: none;
-  color: #A0AEC0;
-  font-size: 1rem;
   cursor: pointer;
-  transition: color 0.3s ease;
+  font-size: 1em;
 }
 
+.sidebar a:hover,
 .sidebar button:hover {
-  color: #F6A623; /* Laranja no hover do botão de logout */
+  background-color: #007bff;
+  color: #fff;
+}
+
+.logout-button {
+  color: #dc3545;
+}
+
+.logout-button:hover {
+  background-color: #dc3545;
+  color: #fff;
 }
