@@ -1,32 +1,49 @@
-import axios from "axios";
-import config from "../config";
+import axios from 'axios';
 
 const api = axios.create({
-  baseURL: config.apiBaseUrl,
+  baseURL: 'http://localhost:5000/api',
 });
 
+// Adiciona o token em todas as requisições
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("authToken");
+  const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
 
-const login = async (email, password, role) => {
-  return api.post("/auth/login", { email, password, role });
+export const login = async (credentials) => {
+  const response = await api.post('/auth/login', credentials);
+  return response.data;
 };
 
-const fetchDrivers = async () => {
-  return api.get("/drivers");
+export const getUser = async () => {
+  const response = await api.get('/auth/user');
+  return response.data;
 };
 
-const fetchOrders = async () => {
-  return api.get("/orders");
+export const getOrders = async () => {
+  const response = await api.get('/orders');
+  return response.data;
 };
 
-const createOrder = async (orderData) => {
-  return api.post("/orders", orderData);
+export const getDrivers = async () => {
+  const response = await api.get('/auth/drivers');
+  return response.data;
 };
 
-export { login, fetchDrivers, fetchOrders, createOrder };
+export const createOrder = async (orderData) => {
+  const response = await api.post('/orders', orderData);
+  return response.data;
+};
+
+export const acceptOrder = async (orderId) => {
+  const response = await api.post(`/orders/${orderId}/accept`);
+  return response.data;
+};
+
+export const updateUser = async (userData) => {
+  const response = await api.put('/auth/user', userData);
+  return response.data;
+};
