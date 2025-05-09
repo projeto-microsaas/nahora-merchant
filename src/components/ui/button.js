@@ -1,14 +1,23 @@
-import React from "react";
+// src/components/ui/button.js
+function Button({ className, variant = "default", size = "default", ...props }) {
+  const baseStyles = "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none";
+  
+  const variantStyles = {
+    default: "bg-nahora-orange text-white hover:bg-nahora-orange/90",
+    outline: "border border-input bg-transparent hover:bg-muted hover:text-accent-foreground",
+    ghost: "hover:bg-muted hover:text-accent-foreground",
+  };
 
-export const Button = ({ children, onClick, disabled, type = "button", className = "" }) => {
+  const sizeStyles = {
+    default: "h-10 px-4 py-2",
+    sm: "h-8 px-3 text-xs",
+    lg: "h-12 px-6",
+    icon: "h-10 w-10",
+  };
+
   return (
-    <button
-      type={type}
-      onClick={onClick}
-      disabled={disabled}
-      className={`px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 disabled:opacity-50 ${className}`}
-    >
-      {children}
-    </button>
+    <button className={`${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${className}`} {...props} />
   );
-};
+}
+
+export default Button;

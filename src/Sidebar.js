@@ -1,17 +1,23 @@
-import React from "react";
-import "./Sidebar.css";
+import { Link } from "react-router-dom";
+  import "./Sidebar.css";
 
-const Sidebar = () => {
-  return (
-    <div className="sidebar">
-      <h2>Menu</h2>
-      <ul>
-        <li><a href="/dashboard">Dashboard</a></li>
-        <li><a href="/orders">Pedidos</a></li>
-        <li><a href="/">Sair</a></li>
-      </ul>
-    </div>
-  );
-};
+  const Sidebar = () => {
+    return (
+      <div className="sidebar">
+        <h2>Menu</h2>
+        <ul>
+          <li>
+            <Link to="/deliveries/dashboard">Dashboard</Link>
+          </li>
+          <li>
+            <Link to="/deliveries">Entregas</Link>
+          </li>
+          <li>
+            <Link to="/deliveries/history">Histórico</Link>
+          </li>
+        </ul>
+      </div>
+    );
+  };
 
-export default Sidebar;
+  export default Sidebar;

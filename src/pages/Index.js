@@ -1,63 +1,56 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../api/api.js'; // Caminho corrigido
+import api from '../api/services/api';
 
-const LoginPage = () => {
+const Index = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('Comerciante');
-  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError('');
-
     try {
-      console.log('Iniciando login com:', { email, password, role });
-      const response = await login({ email, password, role });
-      console.log('Resposta do backend:', response);
-
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
-      console.log('Token e usuário salvos no localStorage');
-      console.log('Redirecionando para /dashboard');
-      navigate('/dashboard');
+      const response = await api.post('/api/login', { email, password });
+      console.log("Token salvo:", response.data.token);
+      localStorage.setItem('token', response.data.token);
+      navigate('/merchant'); // Redireciona para /merchant
     } catch (err) {
       console.error('Erro ao fazer login:', err);
-      setError('Erro ao fazer login. Verifique suas credenciais.');
     }
   };
 
   return (
     <div className="container mt-5">
       <h2>Login</h2>
-      {error && <div className="alert alert-danger">{error}</div>}
       <form onSubmit={handleLogin}>
         <div className="mb-3">
-          <label>Email</label>
+          <label htmlFor="email-input" className="form-label">Email</label>
           <input
             type="email"
             className="form-control"
+            id="email-input"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
         <div className="mb-3">
-          <label>Senha</label>
+          <label htmlFor="password-input" className="form-label">Senha</label>
           <input
             type="password"
             className="form-control"
+            id="password-input"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
         <div className="mb-3">
-          <label>Função</label>
+          <label htmlFor="role-input" className="form-label">Função</label>
           <select
             className="form-control"
+            id="role-input"
             value={role}
             onChange={(e) => setRole(e.target.value)}
           >
@@ -73,4 +66,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Index;

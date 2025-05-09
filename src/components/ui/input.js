@@ -1,14 +1,13 @@
-import React from "react";
+const Input = ({ id, name, type, placeholder, value, onChange, className }) => (
+  <input
+    id={id}
+    name={name}
+    type={type}
+    placeholder={placeholder}
+    value={value}
+    onChange={onChange}
+    className={className}
+  />
+);
 
-export const Input = ({ id, type, value, onChange, required, className = "" }) => {
-  return (
-    <input
-      id={id}
-      type={type}
-      value={value}
-      onChange={onChange}
-      required={required}
-      className={`mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${className}`}
-    />
-  );
-};
+export default Input;
