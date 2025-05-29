@@ -1,3 +1,27 @@
-@tailwind base;
-  @tailwind components;
-  @tailwind utilities;
+:root {
+  /* Tema Claro (padrão) */
+  --background: hsl(0, 0%, 100%); /* #ffffff */
+  --border: hsl(220, 13%, 91%); /* #d1d5db */
+  --muted-foreground: hsl(215, 16%, 47%); /* #6b7280 */
+  --primary: hsl(221, 83%, 53%); /* #3b82f6 */
+  --destructive: hsl(0, 84%, 60%); /* #ef4444 */
+}
+
+/* Tema Escuro */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: hsl(222.2, 84%, 4.9%); /* ~#0c1326 */
+    --border: hsl(220, 13%, 20%); /* Um tom mais escuro para bordas */
+    --muted-foreground: hsl(215, 16%, 60%); /* Um tom mais claro para textos */
+    --primary: hsl(221, 83%, 60%); /* Um azul um pouco mais claro */
+    --destructive: hsl(0, 84%, 70%); /* Um vermelho mais claro */
+  }
+}
+
+/* Estilo base para o corpo da página */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--background);
+}

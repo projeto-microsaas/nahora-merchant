@@ -1,0 +1,278 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background-color:gray;
+  border-right: 1px solid var(--border);
+  padding: 1rem;
+}
+
+.sidebarHeader {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebarHeader h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #FF7300;
+}
+
+.sidebarNav {
+  margin-top: 1rem;
+}
+
+.sidebarNav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  color: var(--text);
+  cursor: pointer;
+  border-radius: 0.375rem;
+}
+
+.navItem:hover {
+  background-color: rgba(255, 115, 0, 0.1);
+}
+
+.navIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #FF7300;
+}
+
+/* Conteúdo Principal */
+.mainContent {
+  flex: 1;
+  padding: 2rem;
+  background-color:#020817;
+}
+
+/* Cabeçalho */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.headerContent {
+  /* Sem estilos específicos necessários */
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.subtitle {
+  color: var(--muted-foreground);
+}
+
+.newDeliveryButton {
+  background-color: #8B5CF6; /* Roxo conforme mock */
+}
+
+.newDeliveryButton:hover {
+  background-color: #7C3AED; /* Roxo escuro conforme mock */
+}
+
+/* Cards de Estatísticas */
+.statsGrid {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .statsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.card {
+  border-radius: 0.5rem;
+  background-color:#020817; /* Azul escuro conforme mock */
+  padding: 1rem;
+  display: flex;
+  box-shadow:   0 1px 3px rgba(139, 139, 139, 0.1);
+  color:white;
+}
+
+
+
+.cardHeader {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.cardTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.cardTitleIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #FF7300;
+}
+
+.cardSubtitle {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+.cardContent {
+  padding: 1rem;
+  text-align: center;
+}
+
+.cardContentNumber {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.cardContentText {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+/* Seção de Gráficos */
+.chartsGrid {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .chartsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.performanceCard {
+  grid-column: span 2;
+}
+
+@media (max-width: 767px) {
+  .performanceCard {
+    grid-column: span 1;
+  }
+}
+
+.chartPlaceholder {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chartIcon {
+  height: 4rem;
+  width: 4rem;
+  color: #8B5CF6; /* Roxo conforme mock */
+  opacity: 0.3;
+}
+
+.systemStats {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.systemStatItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.systemStatLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.systemStatValue {
+  font-weight: 700;
+}
+
+.systemStatValueGreen {
+  color: #16a34a;
+}
+
+.systemStatusBadge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  background-color: #dcfce7;
+  padding: 0.125rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #166534;
+}
+
+/* Entregas Ativas */
+.deliveriesSection {
+  margin-bottom: 1.5rem;
+}
+
+.deliveriesTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.deliveriesGrid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .deliveriesGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.badgePending {
+  background-color: #fef9c3;
+  color: #854d0e;
+}
+
+.badgeAccepted {
+  background-color: #bfdbfe;
+  color: #1e40af;
+}
+
+.badgeInDelivery {
+  background-color: #e9d5ff;
+  color: #6b21a8;
+}
+
+.errorMessage {
+  color: hsl(var(--destructive));
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}

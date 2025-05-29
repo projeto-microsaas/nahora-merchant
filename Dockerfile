@@ -1,12 +1,20 @@
-FROM node:20
+# Usar uma imagem base com Node.js
+FROM node:18
 
-  WORKDIR /app
+# Definir o diretório de trabalho dentro do contêiner
+WORKDIR /app
 
-  COPY package*.json ./
-  RUN npm install
+# Copiar os arquivos de configuração do npm
+COPY package.json package-lock.json* ./
 
-  COPY . .
+# Instalar as dependências
+RUN npm install
 
-  EXPOSE 3000
+# Copiar o restante dos arquivos do projeto
+COPY . .
 
-  CMD ["npm", "start"]
+# Expor a porta usada pelo webpack-dev-server
+EXPOSE 3005
+
+# Comando para iniciar o servidor de desenvolvimento
+CMD ["npm", "start"]

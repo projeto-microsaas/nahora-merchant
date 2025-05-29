@@ -1,20 +1,19 @@
+import React from 'react';
 import { createBrowserRouter } from "react-router-dom";
-import DeliveriesDashboard from "./pages/deliveries/DeliveriesDashboard";
-import DeliveriesPage from "./pages/deliveries/DeliveriesPage";
-import NewDeliveryPage from "./pages/deliveries/NewDeliveryPage";
-import HistoryPage from "./pages/deliveries/HistoryPage";
-import LoginPage from "./pages/auth/LoginPage";
-import MerchantApp from "./pages/merchant/MerchantApp";
+import App from "./App";
+import NewDeliveryPage from "./pages/auth/NewDeliveryPage"; // Ajuste o caminho conforme necessário
+import LoginPage from "./pages/auth/LoginPage"; // Ajuste o caminho conforme necessário
 
 const router = createBrowserRouter([
-  { path: "/", element: <LoginPage /> },
-  { path: "/login", element: <LoginPage /> },
-  { path: "/deliveries/dashboard", element: <DeliveriesDashboard /> },
-  { path: "/deliveries", element: <DeliveriesPage /> },
-  { path: "/new-delivery", element: <NewDeliveryPage /> },
-  { path: "/deliveries/history", element: <HistoryPage /> },
-  { path: "/merchant", element: <MerchantApp /> },
-  { path: "*", element: <div className="p-4 text-center text-white">Página não encontrada (404)</div> },
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      { path: "/merchant/new-delivery", element: <NewDeliveryPage /> },
+      { path: "/login", element: <LoginPage /> }, // Exemplo de rota de login
+      // Adicione outras rotas conforme necessário
+    ],
+  },
 ]);
 
 export default router;
