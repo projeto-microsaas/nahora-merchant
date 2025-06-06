@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Expor a porta usada pelo webpack-dev-server
-EXPOSE 3005
+EXPOSE 3000
 
 # Comando para iniciar o servidor de desenvolvimento
 CMD ["npm", "start"]

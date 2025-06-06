@@ -1,16 +1,8 @@
-import React from 'react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '../components/ui/table';
-import { Badge } from '../components/ui/badge';
-import { Button } from '../components/ui/button';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
+import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
 import { ExternalLink } from 'lucide-react';
-
+import React from 'react';
 const statusConfig = {
   pendente: { label: "Pendente", cor: "bg-yellow-100 text-yellow-800 hover:bg-yellow-100" },
   aceito: { label: "Aceito", cor: "bg-blue-100 text-blue-800 hover:bg-blue-100" },

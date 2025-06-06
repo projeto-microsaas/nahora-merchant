@@ -1,6 +1,10 @@
-import React from 'react';
-import { useIsMobile } from "./use-is-mobile";
-import { ThemeProvider, useTheme } from "./use-theme";
-import { toast, useToast } from "./use-toast";
+import { useContext } from 'react';
+import AuthContext from '../context/AuthContext';
 
-export { useIsMobile, ThemeProvider, useTheme, toast, useToast };
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};

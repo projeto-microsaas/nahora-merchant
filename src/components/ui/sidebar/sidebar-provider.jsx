@@ -1,5 +1,5 @@
 import React from "react";
-import { useIsMobile } from "@/hooks/use-mobile";
+import useIsMobile from '@/hooks/use-mobile';
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SidebarContext, SIDEBAR_COOKIE_NAME, SIDEBAR_COOKIE_MAX_AGE, SIDEBAR_WIDTH, SIDEBAR_WIDTH_ICON } from "./sidebar-context";

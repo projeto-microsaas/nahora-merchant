@@ -1,15 +1,24 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Index from './pages/Index';
+import DeliveriesDashboard from './pages/deliveries/DeliveriesDashboard';
+import NewDeliveryPage from './pages/deliveries/NewDeliveryPage'; // Nova rota
 import LoginPage from './pages/auth/LoginPage';
-import MerchantHomeScreen from './components/merchant/MerchantHomeScreen.jsx'; // Ajuste o caminho conforme necessário
+import RegisterPage from './pages/auth/RegisterPage'; // Nova rota
 
-const App = () => {
+function App() {
+  console.log('App renderizado');
   return (
-    <Routes>
-      <Route path="/login" element={<LoginPage />} /> {/* Apenas para login */}
-      <Route path="/" element={<MerchantHomeScreen />} /> {/* Rota para a tela do lojista */}
-    </Routes>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/deliveries" element={<DeliveriesDashboard />} />
+        <Route path="/new-delivery" element={<NewDeliveryPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+      </Routes>
+    </Router>
   );
-};
+}
 
 export default App;

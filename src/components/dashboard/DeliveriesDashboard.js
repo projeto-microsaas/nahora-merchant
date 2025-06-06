@@ -1,104 +1,230 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import DashboardLayout from "../../components/layout/DashboardLayout";
-import DeliveryCard from "../../components/dashboard/DeliveryCard";
-import { Activity } from "lucide-react";
-import api from "../../api/services/api.js";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from '../../lib/axios';
+import styles from './DeliveriesDashboard.module.css';
 
 const DeliveriesDashboard = () => {
+  const navigate = useNavigate();
   const [stats, setStats] = useState({
     deliveriesToday: 0,
     activeDeliveries: 0,
-    avgTime: "0 min",
-    earnings: "R$ 0,00",
+    pendingDeliveries: 0,
+    inRouteDeliveries: 0,
+    averageTime: 0,
+    dailyRevenue: 0,
   });
-  const [recentDeliveries, setRecentDeliveries] = useState([]);
-  const [error, setError] = useState("");
-  const driversAvailable = 3; // Removido useState, pois não usamos setDriversAvailable
-
-  const fetchStats = async () => {
-    try {
-      const response = await api.get("/api/stats");
-      setStats(response.data);
-    } catch (err) {
-      console.error("Erro ao buscar estatísticas:", err);
-      setError("Erro ao buscar estatísticas. Tente novamente.");
-    }
-  };
-
-  const fetchRecentDeliveries = async () => {
-    try {
-      const response = await api.get("/api/deliveries", {
-        params: { status: "pending,accepted,picked" },
-      });
-      setRecentDeliveries(response.data.slice(0, 3));
-    } catch (err) {
-      console.error("Erro ao buscar entregas recentes:", err);
-      setError("Erro ao buscar entregas recentes. Tente novamente.");
-    }
-  };
+  const [systemStatus, setSystemStatus] = useState({
+    motoboysOnline: 0,
+    acceptanceTime: 0,
+    status: 'Desconhecido',
+  });
+  const [activeDeliveries, setActiveDeliveries] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchStats();
-    fetchRecentDeliveries();
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+          throw new Error('Token de autenticação não encontrado');
+        }
+
+        const config = {
+          headers: { Authorization: `Bearer ${token}` },
+        };
+
+        const [
+          statsResponse,
+          systemStatusResponse,
+          activeDeliveriesResponse,
+        ] = await Promise.all([
+          axios.get('/api/stats', config),
+          axios.get('/api/system-status', config),
+          axios.get('/api/active-deliveries', config),
+        ]);
+
+        setStats(statsResponse.data);
+        setSystemStatus(systemStatusResponse.data);
+        setActiveDeliveries(activeDeliveriesResponse.data);
+      } catch (err) {
+        console.error('Erro ao carregar dados:', err);
+        setError(err.response?.data?.message || 'Erro ao carregar dados');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+    const interval = setInterval(fetchData, 30000); // Atualiza a cada 30 segundos
+    return () => clearInterval(interval);
   }, []);
 
+  if (loading) return <div className={styles.loading}>Carregando...</div>;
+
   return (
-    <DashboardLayout>
-      <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-          <Link to="/new-delivery">
-            <button className="bg-javai-purple hover:bg-javai-purple-dark text-white font-semibold py-2 px-4 rounded">
-              Nova Entrega
-            </button>
-          </Link>
+    <div className={styles.layout}>
+      {/* Sidebar */}
+      <aside className={styles.sidebar}>
+        <div className={styles.sidebarHeader}>
+          <h2>NaHora!</h2>
         </div>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold mb-2">Entregas Hoje</h2>
-            <p className="text-2xl font-bold">{stats.deliveriesToday}</p>
+        <nav className={styles.sidebarNav}>
+          <ul>
+            <li className={styles.navItem}>
+              <span className={styles.navIcon}>🏠</span> Dashboard
+            </li>
+            <li className={styles.navItem}>
+              <span className={styles.navIcon}>📦</span> Entregas
+            </li>
+            <li className={styles.navItem}>
+              <span className={styles.navIcon}>👤</span> Perfil
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      {/* Conteúdo Principal */}
+      <main className={styles.mainContent}>
+        <header className={styles.header}>
+          <div className={styles.headerContent}>
+            <h1 className={styles.title}>Dashboard de Entregas</h1>
+            <p className={styles.subtitle}>Visão geral das suas entregas</p>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold mb-2">Entregas Ativas</h2>
-            <p className="text-2xl font-bold">{stats.activeDeliveries}</p>
+          <button
+            className={styles.newDeliveryButton}
+            onClick={() => navigate('/new-delivery')}
+          >
+            Nova Entrega
+          </button>
+        </header>
+
+        {/* Cards de Estatísticas */}
+        {error && <p className={styles.errorMessage}>{error}</p>}
+        <div className={styles.statsGrid}>
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <div className={styles.cardTitle}>
+                <span className={styles.cardTitleIcon}>📦</span> Entregas Hoje
+              </div>
+            </div>
+            <div className={styles.cardContent}>
+              <p className={styles.cardContentNumber}>{stats.deliveriesToday}</p>
+              <p className={styles.cardContentText}>2 entregas a mais que ontem</p>
+            </div>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold mb-2">Tempo Médio</h2>
-            <p className="text-2xl font-bold">{stats.avgTime}</p>
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <div className={styles.cardTitle}>
+                <span className={styles.cardTitleIcon}>🚚</span> Entregas em Andamento
+              </div>
+            </div>
+            <div className={styles.cardContent}>
+              <p className={styles.cardContentNumber}>{stats.activeDeliveries}</p>
+              <p className={styles.cardContentText}>
+                {stats.pendingDeliveries} pendentes, {stats.inRouteDeliveries} em rota
+              </p>
+            </div>
           </div>
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-lg font-semibold mb-2">Ganhos</h2>
-            <p className="text-2xl font-bold">{stats.earnings}</p>
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <div className={styles.cardTitle}>
+                <span className={styles.cardTitleIcon}>⏱️</span> Tempo Médio
+              </div>
+            </div>
+            <div className={styles.cardContent}>
+              <p className={styles.cardContentNumber}>{stats.averageTime} min</p>
+              <p className={styles.cardContentText}>Média das últimas 24h</p>
+            </div>
+          </div>
+          <div className={styles.card}>
+            <div className={styles.cardHeader}>
+              <div className={styles.cardTitle}>
+                <span className={styles.cardTitleIcon}>💰</span> Faturamento do Dia
+              </div>
+            </div>
+            <div className={styles.cardContent}>
+              <p className={styles.cardContentNumber}>R$ {stats.dailyRevenue.toFixed(2)}</p>
+              <p className={styles.cardContentText}>{stats.deliveriesToday} entregas realizadas</p>
+            </div>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h2 className="text-lg font-semibold mb-2 flex items-center">
-            <Activity className="mr-2 text-javai-purple" size={20} /> Gráfico de Desempenho
-          </h2>
-          <p className="text-gray-500">Placeholder para gráfico de atividades (em desenvolvimento)</p>
-        </div>
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h2 className="text-lg font-semibold mb-2">Status do Sistema</h2>
-          <p className="text-gray-600">Motoristas disponíveis: {driversAvailable}</p>
-        </div>
-        <h2 className="text-xl font-semibold mb-4">Entregas Recentes</h2>
-        {recentDeliveries.length > 0 ? (
-          <div className="grid gap-6">
-            {recentDeliveries.map((delivery) => (
-              <DeliveryCard
-                key={delivery._id}
-                delivery={delivery}
-                onUpdate={fetchRecentDeliveries}
-              />
-            ))}
+
+        {/* Seção de Gráficos */}
+        <div className={styles.chartsGrid}>
+          <div className={styles.performanceCard}>
+            <div className={styles.cardHeader}>
+              <h3 className={styles.cardTitle}>Performance de Entregas</h3>
+              <p className={styles.cardSubtitle}>Total de entregas dos últimos 7 dias</p>
+            </div>
+            <div className={styles.cardContent}>
+              <div className={styles.chartPlaceholder}>
+                <span className={styles.chartIcon}>📊</span>
+              </div>
+            </div>
           </div>
-        ) : (
-          <p className="text-gray-500">Nenhuma entrega recente encontrada.</p>
-        )}
-      </div>
-    </DashboardLayout>
+
+          <div className={styles.systemCard}>
+            <div className={styles.cardHeader}>
+              <h3 className={styles.cardTitle}>Status do Sistema</h3>
+              <p className={styles.cardSubtitle}>Motoboys disponíveis próximos</p>
+            </div>
+            <div className={styles.cardContent}>
+              <div className={styles.systemStats}>
+                <div className={styles.systemStatItem}>
+                  <span className={styles.systemStatLabel}>Motoboys Online</span>
+                  <span className={styles.systemStatValueGreen}>{systemStatus.motoboysOnline}</span>
+                </div>
+                <div className={styles.systemStatItem}>
+                  <span className={styles.systemStatLabel}>Tempo de Aceite</span>
+                  <span className={styles.systemStatValue}>~{systemStatus.acceptanceTime} min</span>
+                </div>
+                <div className={styles.systemStatItem}>
+                  <span className={styles.systemStatLabel}>Status</span>
+                  <span className={styles.systemStatusBadge}>{systemStatus.status}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Entregas Ativas */}
+        <section className={styles.deliveriesSection}>
+          <h2 className={styles.deliveriesTitle}>Entregas Ativas</h2>
+          <div className={styles.deliveriesGrid}>
+            {activeDeliveries.length > 0 ? (
+              activeDeliveries.map((delivery) => (
+                <div key={delivery.id} className={styles.card}>
+                  <div className={styles.cardHeader}>
+                    <div className={styles.cardTitle}>
+                      Pedido #{delivery.id} - {delivery.name}
+                    </div>
+                    <span
+                      className={
+                        delivery.status === 'Pendente'
+                          ? styles.badgePending
+                          : delivery.status === 'Aceita'
+                          ? styles.badgeAccepted
+                          : styles.badgeInDelivery
+                      }
+                    >
+                      {delivery.status}
+                    </span>
+                  </div>
+                  <div className={styles.cardContent}>
+                    <p><strong>Endereço:</strong> {delivery.address}</p>
+                    <p><strong>Tempo:</strong> {delivery.timeAgo} min atrás</p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>Nenhuma entrega ativa no momento.</p>
+            )}
+          </div>
+        </section>
+      </main>
+    </div>
   );
 };
 
