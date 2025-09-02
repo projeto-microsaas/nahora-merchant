@@ -1,42 +1,105 @@
-import React from 'react';
-import { CartItemCard } from "./CartItemCard";
-import { Input } from "../../ui/input";
-import { Search } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { Search } from 'lucide-react';
+import CartItemCard from './CartItemCard';
+import axios from 'axios';
+import styles from './ProductList.module.css';
 
-const ProductList = ({ cartItems, setCartItems, searchTerm, setSearchTerm }) => {
-  // Placeholder for product search logic
-  const handleAddItem = (product) => {
-    setCartItems([...cartItems, { ...product, quantity: 1, observations: "" }]);
+const ProductList = () => {
+  const { setValue, watch } = useFormContext();
+  const [search, setSearch] = useState('');
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const selectedProducts = watch('order.products') || [];
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const token = localStorage.getItem('authToken');
+        console.log('Token recuperado do localStorage:', token); // Depuração
+        if (!token) {
+          throw new Error('Token de autenticação não encontrado. Faça login novamente.');
+        }
+        const response = await axios.get('/api/products', {
+          headers: { 'Authorization': `Bearer ${token}` }, // Força o cabeçalho para depuração
+        });
+        console.log('Resposta da API:', response.data);
+        if (Array.isArray(response.data)) {
+          setProducts(response.data);
+        } else if (Array.isArray(response.data.products)) {
+          setProducts(response.data.products);
+        } else {
+          setProducts([]);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar produtos:', error.response?.data || error.message);
+        setError(`Erro ao carregar produtos: ${error.response?.data?.message || error.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  const safeProducts = Array.isArray(products) ? products : [];
+
+  const filteredProducts = safeProducts.filter((product) =>
+    product.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const handleAddProduct = (product) => {
+    console.log('Adicionando produto:', product);
+    const updatedProducts = [...selectedProducts, { ...product, quantity: 1 }];
+    setValue('order.products', updatedProducts);
+    console.log('Produtos selecionados após adicionar:', updatedProducts);
   };
 
+  if (loading) return <div>Carregando produtos...</div>;
+  if (error) return <div>{error}</div>;
+
   return (
-    <div className="space-y-4">
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder="Pesquisar produtos..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-10 text-sm sm:text-base w-full"
+    <div className={styles.container}>
+      <div className={styles.searchContainer}>
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Buscar produtos..."
+          className={styles.searchInput}
         />
+        <Search className={styles.searchIcon} />
       </div>
-      <div className="space-y-3">
-        {cartItems.map((item) => (
-          <CartItemCard
-            key={item.id}
-            item={item}
-            onUpdateQuantity={(id, quantity) => {
-              setCartItems(cartItems.map(i => i.id === id ? { ...i, quantity: Math.max(1, quantity) } : i));
-            }}
-            onUpdateObservations={(id, observations) => {
-              setCartItems(cartItems.map(i => i.id === id ? { ...i, observations } : i));
-            }}
-            onRemoveItem={(id) => {
-              setCartItems(cartItems.filter(i => i.id !== id));
-            }}
-          />
-        ))}
-      </div>
+      {filteredProducts.length > 0 ? (
+        <div className={styles.productList}>
+          {filteredProducts.map((product) => (
+            <div key={product._id || product.id} className={styles.productCard}>
+              <div className={styles.productInfo}>
+                <p className={styles.productName}>{product.name}</p>
+                <p className={styles.productPrice}>R${product.price}</p>
+                <span className={styles.categoryBadge}>{product.category}</span>
+              </div>
+              <button
+                onClick={() => handleAddProduct(product)}
+                className={styles.addButton}
+                type="button"
+              >
+                Adicionar
+              </button>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className={styles.emptyState}>Nenhum produto encontrado. Adicione produtos em /add-product.</p>
+      )}
+      {selectedProducts.length > 0 && (
+        <div className={styles.cartItems}>
+          {selectedProducts.map((p, index) => (
+            <CartItemCard key={index} product={p} index={index} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

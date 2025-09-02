@@ -1,31 +1,53 @@
 import React from 'react';
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "../ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { useFormContext } from 'react-hook-form';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "../../ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select";
+import styles from './ResidenceTypeSelector.module.css';
 
-const ResidenceTypeSelector = ({ form }) => {
+const ResidenceTypeSelector = () => {
+  const { control, watch } = useFormContext();
+
   return (
-    <FormField
-      control={form.control}
-      name="deliveryType"
-      render={({ field }) => (
-        <FormItem>
-          <FormLabel className="text-sm sm:text-base">Tipo de Residência</FormLabel>
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
+    <div className={styles.container}>
+      <FormField
+        control={control}
+        name="deliveryAddress.residenceType"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Tipo de Residência</FormLabel>
             <FormControl>
-              <SelectTrigger className="text-sm sm:text-base">
-                <SelectValue placeholder="Selecione o tipo" />
-              </SelectTrigger>
+              <Select onValueChange={field.onChange} value={field.value}>
+                <SelectTrigger className={styles.select}>
+                  <SelectValue placeholder="Selecione..." />
+                </SelectTrigger>
+                <SelectContent className={styles.dropdown}>
+                  <SelectItem value="house">Casa</SelectItem>
+                  <SelectItem value="apartment">Apartamento</SelectItem>
+                </SelectContent>
+              </Select>
             </FormControl>
-            <SelectContent>
-              <SelectItem value="house">Casa</SelectItem>
-              <SelectItem value="apartment">Apartamento</SelectItem>
-            </SelectContent>
-          </Select>
-          <FormMessage />
-        </FormItem>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      {watch('deliveryAddress.residenceType') === 'apartment' && (
+        <FormField
+          control={control}
+          name="deliveryAddress.apartment"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nº Apartamento</FormLabel>
+              <FormControl>
+                <input {...field} className={styles.apartmentInput} placeholder="Número do apartamento" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
       )}
-    />
+    </div>
   );
 };
 
 export default ResidenceTypeSelector;
+

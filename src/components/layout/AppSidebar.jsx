@@ -1,132 +1,115 @@
 import { 
-    Package, 
-    History, 
-    Home, 
-    PlusCircle, 
-    Settings, 
-    LogOut, 
-    Menu,
-    Bike
-  } from "lucide-react";
-  import { 
-    Sidebar, 
-    SidebarContent, 
-    SidebarGroup,
-    SidebarGroupContent,
-    SidebarGroupLabel,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
-    SidebarHeader,
-    SidebarFooter,
-    SidebarTrigger
-  } from "../ui/sidebar";
-  import { cn } from "../../lib/utils";
-  
-  const AppSidebar = () => {
-    return (
-      <Sidebar className="border-r">
-        <SidebarHeader className="flex items-center justify-between p-4">
-          <div className="flex items-center space-x-2">
-            <Bike color="#FF7300" className="h-6 w-6 text-javai-purple" />
-            <span className="text-xl font-bold text-javai-purple">Já Vai!</span>
-          </div>
-          <SidebarTrigger>
-            <Menu color="#FF7300" className="h-5 w-5" />
-          </SidebarTrigger>
-        </SidebarHeader>
-        
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupLabel>Menu</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <a href="/" className={cn(
-                      "flex items-center space-x-3 rounded-md px-3 py-2",
-                      "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                      "w-full"
-                    )}>
-                      <Home color="#FF7300" className="h-5 w-5" />
-                      <span>Visão Geral</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-                
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <a href="/deliveries" className={cn(
-                      "flex items-center space-x-3 rounded-md px-3 py-2",
-                      "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                      "w-full"
-                    )}>
-                      <Package color="#FF7300" className="h-5 w-5" />
-                      <span>Entregas Ativas</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-                
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <a href="/history" className={cn(
-                      "flex items-center space-x-3 rounded-md px-3 py-2",
-                      "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                      "w-full"
-                    )}>
-                      <History color="#FF7300" className="h-5 w-5" />
-                      <span>Histórico</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-                
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <a href="/new-delivery" className={cn(
-                      "flex items-center space-x-3 rounded-md px-3 py-2",
-                      "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                      "w-full"
-                    )}>
-                      <PlusCircle color="#FF7300" className="h-5 w-5" />
-                      <span>Nova Entrega</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-                
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <a href="/settings" className={cn(
-                      "flex items-center space-x-3 rounded-md px-3 py-2",
-                      "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-                      "w-full"
-                    )}>
-                      <Settings color="#FF7300" className="h-5 w-5" />
-                      <span>Configurações</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
-        
-        <SidebarFooter className="border-t p-4">
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <button className={cn(
-                  "flex w-full items-center space-x-3 rounded-md px-3 py-2",
-                  "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                )}>
-                  <LogOut color="#FF7300" className="h-5 w-5" />
-                  <span>Sair</span>
-                </button>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarFooter>
-      </Sidebar>
-    );
+  Package, 
+  History, 
+  Home, 
+  PlusCircle, 
+  Settings, 
+  LogOut, 
+  Menu,
+  Bike
+} from "lucide-react";
+import { 
+  Sidebar, 
+  SidebarContent, 
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarHeader,
+  SidebarFooter,
+  SidebarTrigger
+} from "@/components/ui/sidebar";
+import styles from "./AppSidebar.module.css";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
+
+
+export function AppSidebar() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("authToken"); // Remove o token de autenticação
+    navigate("/login"); // Redireciona para a página de login
   };
-  
-  export default AppSidebar;
+
+  return (
+    <Sidebar className="border-r" style={{ backgroundColor: '#1a202c', width: '260px', minHeight: '100vh', height: '100%' }}>
+      <SidebarHeader className={styles.sidebarHeader}>
+        <div className={styles.logoContainer}>
+          <Bike color="#FF7300" className={styles.logoIcon} />
+          <span className={styles.logoText}>NaHora!</span>
+        </div>
+      </SidebarHeader>
+      
+      <SidebarContent>
+        <SidebarGroup>
+         
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <a href="/" className={styles.menuItem}>
+                    <Home color="#FF7300" className={styles.menuItemIcon} />
+                    Visão Geral
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <a href="/active-deliveries" className={styles.menuItem}>
+                    <Package color="#FF7300" className={styles.menuItemIcon} />
+                    Entregas Ativas
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <a href="/history" className={styles.menuItem}>
+                    <History color="#FF7300" className={styles.menuItemIcon} />
+                    Histórico
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <a href="/new-delivery" className={styles.menuItem}>
+                    <PlusCircle color="#FF7300" className={styles.menuItemIcon} />
+                    Nova Entrega
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <a href="/settings" className={styles.menuItem}>
+                    <Settings color="#FF7300" className={styles.menuItemIcon} />
+                    Configurações
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+      
+      <SidebarFooter className={styles.sidebarFooter}>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <button className={styles.logoutButton} onClick={handleLogout}>
+                <LogOut color="#FF7300" className={styles.logoutIcon} />
+                Sair
+              </button>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
+    </Sidebar>
+  );
+}

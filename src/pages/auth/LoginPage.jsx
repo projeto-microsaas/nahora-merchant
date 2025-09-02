@@ -1,4 +1,3 @@
-// src/pages/auth/LoginPage.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
@@ -11,7 +10,7 @@ import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import axios from '@/lib/axios';
-import styles from '@/pages/auth/LoginPage.module.css'; // Use import em vez de require
+import styles from '@/pages/auth/LoginPage.module.css';
 
 const loginSchema = z.object({
   email: z.string().email({ message: 'E-mail inválido.' }),
@@ -31,7 +30,10 @@ const LoginPage = () => {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      const response = await axios.post('/api/auth/login', data);
+      console.log('Dados enviados para login:', data); // Depuração detalhada
+      const response = await axios.post('/api/auth/login', data, {
+        headers: { 'Content-Type': 'application/json' },
+      });
       const { token } = response.data;
       if (!token) throw new Error('Token não retornado pelo servidor');
       localStorage.setItem('authToken', token);
@@ -39,8 +41,10 @@ const LoginPage = () => {
       toast.success('Login realizado com sucesso!');
       navigate('/deliveries');
     } catch (error) {
-      console.error('Erro no login:', error.response?.data || error);
-      toast.error('Erro ao fazer login: ' + (error.response?.data?.message || 'Verifique suas credenciais'));
+      console.error('Erro no login:', error.response?.data || error.message);
+      const errorMessage = error.response?.data?.message || 'Erro ao fazer login. Verifique suas credenciais.';
+      toast.error(`Erro ao fazer login: ${errorMessage}`);
+      form.setError('root.serverError', { message: errorMessage });
     } finally {
       setIsLoading(false);
     }

@@ -1,0 +1,183 @@
+/* Variáveis de cor para dark e light mode (ajustadas no :root do seu index.css) */
+/* Aqui só usamos as variáveis, não redefinimos! */
+
+:root {
+  --sidebar-background: #1a202c;
+  --sidebar-accent: #23293a;
+}
+
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: var(--sidebar-background);
+  /* Removida a borda inferior */
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logoIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #FF7300;
+}
+
+.logoText {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: white;
+  letter-spacing: 0.02em;
+}
+
+/* Sidebar ocupa toda a altura da tela e organiza header, conteúdo e footer */
+.sidebarRoot,
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100vh;
+  background-color: #1a202c; /* Fundo consistente */
+  width: 260px; /* Largura fixa */
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  background-color: #1a202c;
+  transition: background 0.2s, color 0.2s;
+}
+
+.menuItemIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #FF7300;
+}
+
+.menuItem:hover,
+.menuItem:focus,
+.menuItemActive {
+  background-color: var(--sidebar-accent);
+  color: var(--sidebar-accent-foreground, #FF7300);
+}
+
+.sidebarContent {
+  flex: 1 1 0%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background-color: #1a202c;
+  overflow-y: auto;
+}
+
+/* Rodapé sempre no final, sem borda superior */
+.sidebarFooter {
+  padding: 1rem;
+  background: var(--sidebar-background);
+  /* Removida a borda superior */
+  margin-top: auto; /* Empurra o footer para o fundo */
+}
+
+.logoutButton {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  width: 100%; /* Ocupa toda a largura do footer */
+  text-align: left; /* Alinha o texto à esquerda */
+}
+
+.logoutIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #FF7300;
+}
+
+.logoutButton:hover,
+.logoutButton:focus {
+  background: var(--sidebar-accent);
+  color: var(--sidebar-accent-foreground, #FF7300);
+  outline: none;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .sidebarHeader {
+    padding: 0.75rem;
+  }
+  .sidebarFooter {
+    padding: 0.75rem;
+  }
+  .menuItem,
+  .logoutButton {
+    font-size: 0.95rem;
+    padding: 0.5rem 0.5rem;
+  }
+}
+
+/* Label "Menu" em cinza */
+.sidebarGroupLabel {
+  font-size: 3px;
+  font-weight: 600;
+  font-color:white;
+  color: #a0aec0; /* Cinza claro */
+ display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background:red;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.5rem;
+  border-radius: 0.375rem;
+  text-transform: uppercase; /* Deixa o texto em maiúsculas */
+  letter-spacing: 0.05em; /* Espaçamento entre letras */
+  background-color: #2d3748; /* Fundo escuro para destaque */
+  padding: 1rem;
+
+}
+
+/* Garantir que não haja pontos ou marcadores */
+.sidebarMenu,
+.sidebarMenu ul,
+.sidebarMenu li,
+.sidebarMenuItem {
+  list-style: none;
+  padding-left: 0;
+  margin-left: 0;
+  list-style-type: none; /* Remover marcadores */
+}
+
+/* Regras específicas para forçar remoção de pontos */
+.sidebarMenuItem::before,
+.sidebarMenuItem::after {
+  content: none; /* Remove qualquer conteúdo gerado antes ou depois */
+}
+
+.sidebarMenuButton {
+  list-style: none;
+  padding-left: 0;
+  margin-left: 0;
+  list-style-type: none;
+}
+
+.sidebarMenuButton::before,
+.sidebarMenuButton::after {
+  content: none; /* Remove qualquer conteúdo gerado antes ou depois */
+}

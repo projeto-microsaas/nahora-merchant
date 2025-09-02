@@ -1,0 +1,198 @@
+.header {
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.subtitle {
+  color: #666;
+}
+
+.tabs {
+  width: 100%;
+}
+
+.tabsList {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tabContent {
+  padding: 1rem 0;
+}
+
+.card {
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+}
+
+.cardHeader {
+  padding: 1rem;
+}
+
+.cardTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.cardDescription {
+  color: #666;
+}
+
+.cardContent {
+  padding: 1rem;
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr 1fr;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.saveButton {
+  grid-column: span 2;
+  width: fit-content;
+}
+
+.error {
+  color: #dc3545;
+  margin-top: 1rem;
+}
+
+.success {
+  color: #28a745;
+  margin-top: 1rem;
+}
+
+.notificationSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.notificationGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.notificationTitle {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.switchGroup {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.switchLabel {
+  font-size: 1rem;
+}
+
+.switchCustom {
+  width: 42px;
+  height: 24px;
+  background-color: #ccc;
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.switchCustom[aria-checked="true"] {
+  background-color: #4caf50;
+}
+
+.switchCustom .Thumb {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.2s;
+}
+
+.switchCustom[aria-checked="true"] .Thumb {
+  transform: translateX(18px);
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.paymentSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.paymentItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.paymentTitle {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.paymentDescription {
+  color: #666;
+}
+
+.cardItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.cardForm {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.separator {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 1rem 0;
+}
+
+.historySection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.historyItem {
+  padding: 0.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.noHistory {
+  color: #666;
+  text-align: center;
+  padding: 1rem;
+}

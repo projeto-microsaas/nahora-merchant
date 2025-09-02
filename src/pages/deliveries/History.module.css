@@ -1,0 +1,141 @@
+.dashboardLayout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #f9fafb;
+}
+
+.Sidebar {
+  width: 250px;
+  background-color: #1f2937;
+  padding: 1rem;
+  color: #ffffff;
+}
+
+.sidebarLogo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.sidebarTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-left: 0.5rem;
+}
+
+.sidebarNav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.navItem {
+  padding: 0.75rem 1rem;
+  color: #FF7300;
+  text-decoration: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.navItem:hover {
+  background-color: #374151;
+  border-radius: 0.25rem;
+}
+
+.navIcon {
+  margin-right: 0.5rem;
+}
+
+.logoutButton {
+  margin-top: auto;
+  padding: 0.75rem 1rem;
+  background-color: #FF7300;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  width: 100%;
+}
+
+.logoutButton:hover {
+  background-color: rgba(255, 115, 0, 0.9);
+}
+
+.mainContent {
+  flex: 1;
+  padding: 1.5rem;
+  overflow: auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.subtitle {
+  color: #6b7280;
+  margin: 0.5rem 0 0 0;
+}
+
+.newDeliveryButton {
+  background-color: #FF7300;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.newDeliveryButton:hover {
+  background-color: rgba(255, 115, 0, 0.9);
+}
+
+.searchContainer {
+  margin-bottom: 1.5rem;
+}
+
+.relative {
+  position: relative;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 0.625rem; /* 2.5 * 0.25rem */
+  top: 0.625rem; /* 2.5 * 0.25rem */
+  height: 1rem; /* 4 * 0.25rem */
+  width: 1rem; /* 4 * 0.25rem */
+  color: #6b7280;
+}
+
+.searchInput {
+  padding-left: 2rem; /* 8 * 0.25rem */
+  width: 100%;
+  max-width: 400px;
+}
+
+.pagination {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.loading,
+.error {
+  text-align: center;
+  font-size: 1.2em;
+  color: #dc2626;
+  padding: 20px;
+}

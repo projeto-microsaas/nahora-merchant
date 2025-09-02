@@ -1,0 +1,72 @@
+.pageContainer {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.pageTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.cardHeader {
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.cardContent {
+  padding: 1.5rem;
+}
+
+.cardContent p {
+  margin: 0.5rem 0;
+  font-size: 0.875rem;
+  color: #111827;
+}
+
+.cardContent strong {
+  color: #374151;
+}
+
+/* Estilos para a seção de produtos */
+.productsSection {
+  margin-top: 1.5rem;
+}
+
+.productsTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.productsList {
+  list-style: none;
+  padding: 0;
+}
+
+.productItem {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.875rem;
+  color: #111827;
+}
+
+.productItem:last-child {
+  border-bottom: none;
+}

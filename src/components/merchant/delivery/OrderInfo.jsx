@@ -1,40 +1,29 @@
 import React from 'react';
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "../ui/form";
-import { Input } from "../../ui/input";
+import { useFormContext } from 'react-hook-form';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "../../ui/form";
+import styles from './OrderInfo.module.css';
 
-const OrderInfo = ({ form }) => {
+const OrderInfo = () => {
+  const { control, watch } = useFormContext();
+  const products = watch('order.products') || [];
+  const total = products.reduce((sum, p) => sum + (Number(p.price) * Number(p.quantity) || 0), 0);
+
   return (
-    <div className="space-y-4">
+    <div className={styles.container}>
+      <div className={styles.total}>
+        <FormLabel>Valor Total:</FormLabel>
+        <FormControl>
+          <input value={`R$${total.toFixed(2)}`} readOnly className={styles.totalInput} />
+        </FormControl>
+      </div>
       <FormField
-        control={form.control}
-        name="orderTotal"
+        control={control}
+        name="order.instructions"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-sm sm:text-base">Total do Pedido</FormLabel>
+            <FormLabel>Instruções para o motorista</FormLabel>
             <FormControl>
-              <Input
-                {...field}
-                value={field.value || "0,00"}
-                readOnly
-                className="text-sm sm:text-base"
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-      <FormField
-        control={form.control}
-        name="deliveryInstructions"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel className="text-sm sm:text-base">Instruções de Entrega (opcional)</FormLabel>
-            <FormControl>
-              <Input
-                {...field}
-                placeholder="Ex: Deixar na portaria"
-                className="text-sm sm:text-base"
-              />
+              <textarea {...field} className={styles.instructions} placeholder="Digite instruções..." />
             </FormControl>
             <FormMessage />
           </FormItem>

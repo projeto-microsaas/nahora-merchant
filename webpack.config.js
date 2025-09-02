@@ -60,9 +60,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
-    new webpack.DefinePlugin({
-      'process.env.REACT_APP_API_URL': JSON.stringify(process.env.REACT_APP_API_URL || 'http://backend:5000'),
-    }),
+    // Remova ou comente o DefinePlugin para evitar URLs absolutas
+    // new webpack.DefinePlugin({
+    //   'process.env.REACT_APP_API_URL': JSON.stringify(process.env.REACT_APP_API_URL || 'http://backend:5000'),
+    // }),
   ],
   devServer: {
     historyApiFallback: true,

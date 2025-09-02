@@ -1,31 +1,41 @@
 import React from 'react';
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "../ui/form";
-import { Input } from "../../ui/input";
+import { useFormContext } from 'react-hook-form';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "../../ui/form";
+import { User, Phone } from 'lucide-react';
+import styles from './RecipientInfo.module.css';
 
-const RecipientInfo = ({ form }) => {
+const RecipientInfo = () => {
+  const { control } = useFormContext();
+
   return (
-    <div className="space-y-4">
+    <div className={styles.container}>
       <FormField
-        control={form.control}
-        name="recipientName"
+        control={control}
+        name="recipient.name"
         render={({ field }) => (
-          <FormItem>
-            <FormLabel className="text-sm sm:text-base">Nome do Destinatário</FormLabel>
+          <FormItem className={styles.field}>
+            <div className={styles.labelContainer}>
+              <User className={styles.icon} />
+              <FormLabel>Nome</FormLabel>
+            </div>
             <FormControl>
-              <Input placeholder="Nome completo" {...field} className="text-sm sm:text-base" />
+              <input {...field} className={styles.input} placeholder="Nome" />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
       <FormField
-        control={form.control}
-        name="recipientPhone"
+        control={control}
+        name="recipient.phone"
         render={({ field }) => (
-          <FormItem>
-            <FormLabel className="text-sm sm:text-base">Telefone do Destinatário</FormLabel>
+          <FormItem className={styles.field}>
+            <div className={styles.labelContainer}>
+              <Phone className={styles.icon} />
+              <FormLabel>Telefone</FormLabel>
+            </div>
             <FormControl>
-              <Input placeholder="(XX) XXXXX-XXXX" {...field} className="text-sm sm:text-base" />
+              <input {...field} className={styles.input} placeholder="Telefone" />
             </FormControl>
             <FormMessage />
           </FormItem>

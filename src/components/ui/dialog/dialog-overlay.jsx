@@ -1,3 +1,4 @@
+import React from 'react';
 const DialogOverlay = React.forwardRef((props, ref) => {
     const { className, ...rest } = props;
     return (

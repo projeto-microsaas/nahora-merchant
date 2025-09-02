@@ -1,0 +1,44 @@
+.container {
+  padding: 1rem;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+}
+
+.header {
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.content {
+  margin: 1rem 0;
+  color: #6b7280; /* text-muted-foreground */
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.cancelButton {
+  background-color: #e5e7eb; /* bg-gray-200 */
+  color: #374151; /* text-gray-700 */
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+}
+
+.confirmButton {
+  background-color: #ff6b35; /* bg-javai-orange */
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+}
+
+.confirmButton:hover {
+  background-color: rgba(255, 107, 53, 0.9); /* hover:bg-javai-orange/90 */
+}
