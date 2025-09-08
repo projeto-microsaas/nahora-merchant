@@ -1,3 +1,4 @@
+import React from 'react';
 import { 
   Package, 
   History, 
@@ -5,7 +6,6 @@ import {
   PlusCircle, 
   Settings, 
   LogOut, 
-  Menu,
   Bike
 } from "lucide-react";
 import { 
@@ -13,103 +13,100 @@ import {
   SidebarContent, 
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarHeader,
-  SidebarFooter,
-  SidebarTrigger
+  SidebarFooter
 } from "@/components/ui/sidebar";
 import styles from "./AppSidebar.module.css";
-import React from "react";
 import { useNavigate } from "react-router-dom";
-
-
 
 export function AppSidebar() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("authToken"); // Remove o token de autenticação
-    navigate("/login"); // Redireciona para a página de login
+    localStorage.removeItem("authToken");
+    navigate("/login");
   };
 
   return (
-    <Sidebar className="border-r" style={{ backgroundColor: '#1a202c', width: '260px', minHeight: '100vh', height: '100%' }}>
+    <Sidebar className={styles.sidebar}>
+      {/* Cabeçalho */}
       <SidebarHeader className={styles.sidebarHeader}>
         <div className={styles.logoContainer}>
-          <Bike color="#FF7300" className={styles.logoIcon} />
+          <Bike className={styles.logoIcon} />
           <span className={styles.logoText}>NaHora!</span>
         </div>
       </SidebarHeader>
       
-      <SidebarContent>
+      {/* Conteúdo da Sidebar */}
+      <SidebarContent className={styles.sidebarContent}>
         <SidebarGroup>
-         
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className={styles.menu}>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <a href="/" className={styles.menuItem}>
-                    <Home color="#FF7300" className={styles.menuItemIcon} />
+                  <a href="/deliveries" className={styles.menuItem}>
+                    <Home className={styles.menuIcon} />
                     Visão Geral
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              
+
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
                   <a href="/active-deliveries" className={styles.menuItem}>
-                    <Package color="#FF7300" className={styles.menuItemIcon} />
+                    <Package className={styles.menuIcon} />
                     Entregas Ativas
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              
+
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
                   <a href="/history" className={styles.menuItem}>
-                    <History color="#FF7300" className={styles.menuItemIcon} />
+                    <History className={styles.menuIcon} />
                     Histórico
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              
+
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
                   <a href="/new-delivery" className={styles.menuItem}>
-                    <PlusCircle color="#FF7300" className={styles.menuItemIcon} />
+                    <PlusCircle className={styles.menuIcon} />
                     Nova Entrega
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              
+
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
                   <a href="/settings" className={styles.menuItem}>
-                    <Settings color="#FF7300" className={styles.menuItemIcon} />
+                    <Settings className={styles.menuIcon} />
                     Configurações
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
+
+             {/* Rodapé - Logout */}
+      <SidebarFooter className={styles.sidebarFooter}>
+        <button className={styles.logoutButton} onClick={handleLogout}>
+          <LogOut className={styles.logoutIcon} />
+          <span>Sair</span>
+        </button>
+      </SidebarFooter>
+
+  
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      
-      <SidebarFooter className={styles.sidebarFooter}>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <button className={styles.logoutButton} onClick={handleLogout}>
-                <LogOut color="#FF7300" className={styles.logoutIcon} />
-                Sair
-              </button>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
+
+     
     </Sidebar>
   );
 }
+
+export default AppSidebar;

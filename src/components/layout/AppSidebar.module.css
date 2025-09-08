@@ -1,18 +1,37 @@
-/* Variáveis de cor para dark e light mode (ajustadas no :root do seu index.css) */
-/* Aqui só usamos as variáveis, não redefinimos! */
+/* ===== Fontes ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-:root {
-  --sidebar-background: #1a202c;
-  --sidebar-accent: #23293a;
+:global(html) {
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
+/* ===== Variáveis de Cores ===== */
+.sidebar {
+  --sidebar-background: rgb(26, 32, 44); /* #1a202c */
+  --sidebar-foreground: rgb(242, 244, 246); /* #e2e8f0 */
+  --sidebar-icon: rgb(255, 115, 0); /* #FF7300 */
+  --sidebar-accent: rgb(45, 55, 72); /* #2d3748 */
+  --sidebar-border: rgb(45, 55, 72); /* #2d3748 */
+}
+
+/* ===== Estrutura da Sidebar ===== */
+.sidebar {
+  background-color: var(--sidebar-background);
+  color: var(--sidebar-foreground);
+  border-right: 1px solid var(--sidebar-border);
+  width: 16rem;
+  height: 100vh;             /* ocupa toda a altura da tela */
+  display: flex;
+  flex-direction: column;    /* empilha header, content e footer */
+  position: sticky;
+  top: 0;
+}
+
+/* ===== Cabeçalho ===== */
 .sidebarHeader {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 1rem;
-  background: var(--sidebar-background);
-  /* Removida a borda inferior */
 }
 
 .logoContainer {
@@ -22,162 +41,101 @@
 }
 
 .logoIcon {
-  width: 1.5rem;
   height: 1.5rem;
-  color: #FF7300;
+  width: 1.5rem;
+  color: var(--sidebar-icon);
 }
 
 .logoText {
   font-size: 1.25rem;
-  font-weight: bold;
-  color: white;
-  letter-spacing: 0.02em;
+  font-weight: 700;
+  color: #ffffff;
 }
 
-/* Sidebar ocupa toda a altura da tela e organiza header, conteúdo e footer */
-.sidebarRoot,
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  min-height: 100vh;
-  background-color: #1a202c; /* Fundo consistente */
-  width: 260px; /* Largura fixa */
+/* ===== Conteúdo ===== */
+.sidebarContent {
+  flex: 1; /* ocupa o espaço do meio */
+  overflow-y: auto;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .menuItem {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.5rem 0.75rem;
-  color: #fff;
+  padding: 0.75rem 1rem;
+  color: var(--sidebar-foreground);
   text-decoration: none;
-  font-size: 1rem;
-  font-weight: 500;
-  background-color: #1a202c;
-  transition: background 0.2s, color 0.2s;
+  cursor: pointer;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease-in-out;
 }
 
-.menuItemIcon {
-  width: 1.25rem;
+.menuItem:hover {
+  background: linear-gradient(
+    135deg,
+    var(--sidebar-accent),
+    rgba(255, 115, 0, 0.1)
+  );
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.menuIcon {
   height: 1.25rem;
-  color: #FF7300;
+  width: 1.25rem;
+  color: var(--sidebar-icon);
 }
 
-.menuItem:hover,
-.menuItem:focus,
-.menuItemActive {
-  background-color: var(--sidebar-accent);
-  color: var(--sidebar-accent-foreground, #FF7300);
-}
-
-.sidebarContent {
-  flex: 1 1 0%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  background-color: #1a202c;
-  overflow-y: auto;
-}
-
-/* Rodapé sempre no final, sem borda superior */
+/* ===== Rodapé - Logout ===== */
 .sidebarFooter {
-  padding: 1rem;
-  background: var(--sidebar-background);
-  /* Removida a borda superior */
-  margin-top: auto; /* Empurra o footer para o fundo */
+  background-color: var(--sidebar-background);
+  color: var(--sidebar-foreground);
+  border-right: 1px solid var(--sidebar-border);
+  width: 16rem;
+  height: 100vh;             /* ocupa toda a altura da tela */
+  display: flex;
+  flex-direction: column;    /* empilha header, content e footer */
+  position: sticky;
+  top: 0;
 }
 
 .logoutButton {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.375rem;
   background: none;
   border: none;
-  color: #fff;
-  font-size: 1rem;
+  color: var(--sidebar-foreground);
+  font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-  width: 100%; /* Ocupa toda a largura do footer */
-  text-align: left; /* Alinha o texto à esquerda */
-}
-
-.logoutIcon {
-  width: 1.25rem;
-  height: 1.25rem;
-  color: #FF7300;
-}
-
-.logoutButton:hover,
-.logoutButton:focus {
-  background: var(--sidebar-accent);
-  color: var(--sidebar-accent-foreground, #FF7300);
-  outline: none;
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-  .sidebarHeader {
-    padding: 0.75rem;
-  }
-  .sidebarFooter {
-    padding: 0.75rem;
-  }
-  .menuItem,
-  .logoutButton {
-    font-size: 0.95rem;
-    padding: 0.5rem 0.5rem;
-  }
-}
-
-/* Label "Menu" em cinza */
-.sidebarGroupLabel {
-  font-size: 3px;
-  font-weight: 600;
-  font-color:white;
-  color: #a0aec0; /* Cinza claro */
- display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background:red;
-  padding: 0.5rem 0.75rem;
-  margin-bottom: 0.5rem;
+  width: 100%;
+  text-align: center;
+   padding: 0.75rem 1rem;
   border-radius: 0.375rem;
-  text-transform: uppercase; /* Deixa o texto em maiúsculas */
-  letter-spacing: 0.05em; /* Espaçamento entre letras */
-  background-color: #2d3748; /* Fundo escuro para destaque */
-  padding: 1rem;
-
+  transition: all 0.2s ease-in-out;
 }
 
-/* Garantir que não haja pontos ou marcadores */
-.sidebarMenu,
-.sidebarMenu ul,
-.sidebarMenu li,
-.sidebarMenuItem {
-  list-style: none;
-  padding-left: 0;
-  margin-left: 0;
-  list-style-type: none; /* Remover marcadores */
+.logoutButton:hover {
+  color: #ffffff;
+  background: rgb(255, 115, 0)
+;  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+.logoutIcon {
+  height: 1.25rem;
+  width: 1.25rem;
+  color: var(--sidebar-icon); /* laranja */
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
-/* Regras específicas para forçar remoção de pontos */
-.sidebarMenuItem::before,
-.sidebarMenuItem::after {
-  content: none; /* Remove qualquer conteúdo gerado antes ou depois */
-}
-
-.sidebarMenuButton {
-  list-style: none;
-  padding-left: 0;
-  margin-left: 0;
-  list-style-type: none;
-}
-
-.sidebarMenuButton::before,
-.sidebarMenuButton::after {
-  content: none; /* Remove qualquer conteúdo gerado antes ou depois */
+.logoutIcon:hover {
+  color: #ffffff; /* branco */
+  transform: translateY(-1px);
 }

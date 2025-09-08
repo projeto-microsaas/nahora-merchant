@@ -5,22 +5,40 @@
   font-family: 'Inter', system-ui, sans-serif;
 }
 
+/* ===== Layout com sidebar ===== */
+.dashboardLayout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.mainContent {
+  flex-grow: 1;
+  padding: 2rem 1.5rem;
+  background-color: #f1f5f9;
+  color: #f1f5f9;
+  overflow-y: auto;
+}
+
 /* ===== Container da página ===== */
 .pageContainer {
-  background-color: #0f172a;
-  padding: 2rem 1.5rem;
-  min-height: 100vh;
-  color: #f1f5f9;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 /* ===== Título principal ===== */
+
 .pageTitle {
-  font-size: 1.75rem;
-  font-weight: 600;
-  margin-bottom: 2rem;
-  color: #ffffff;
-  line-height: 1.2;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
 }
+
+.pageSubTitle {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
 
 /* ===== Formulário e grid ===== */
 .form {
@@ -87,7 +105,7 @@
   padding: 1.5rem;
 }
 
-/* ===== Utilitário para ícones (caso use classe .icon) ===== */
+/* ===== Utilitário para ícones ===== */
 .icon {
   width: 1.25rem;
   height: 1.25rem;
@@ -147,15 +165,15 @@
 }
 
 .addressField.street {
-  flex: 2; /* Logradouro mais longo */
+  flex: 2;
 }
 
 .addressField.number {
-  flex: 0.5; /* Número mais curto */
+  flex: 0.5;
 }
 
 .addressField.neighborhood {
-  flex: 1; /* Bairro com tamanho padrão */
+  flex: 1;
 }
 
 .addressField input,
@@ -178,9 +196,9 @@
 
 /* ===== Estilos para OrderInfo (Instruções) ===== */
 .orderField {
-  flex: 1; /* Igualar o tamanho dos outros campos */
+  flex: 1;
 }
 
 .orderField.instructions {
-  margin-top: 1rem; /* Espaçamento após os outros campos */
+  margin-top: 1rem;
 }

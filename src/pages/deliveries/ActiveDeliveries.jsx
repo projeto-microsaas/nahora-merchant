@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader } from '../../components/ui/card';
 import DashboardLayout from '../../components/layout/DashboardLayout';
 import { useNavigate, Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
-import styles from './ActiveDeliveries.modules.css';
+import styles from './ActiveDeliveries.module.css';
 
 const ActiveDeliveries = () => {
   const [activeDeliveries, setActiveDeliveries] = useState([]);

@@ -1,109 +1,87 @@
+/* ===== Fontes ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:global(html) {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* ===== Variáveis de Cores ===== */
+:global([data-theme="dark"]) {
+  --background: rgb(26, 32, 44); /* #1a202c */
+  --foreground: rgb(242, 244, 246); /* #e2e8f0 */
+  --primary: rgb(255, 115, 0); /* #FF7300 */
+  --accent: rgb(45, 55, 72); /* #2d3748 */
+  --border: rgb(45, 55, 72); /* #2d3748 */
+}
+
+:global([data-theme="light"]) {
+  --background: rgb(250, 250, 250); /* #fafafa */
+  --foreground: rgb(62, 66, 70); /* #3e4246 */
+  --primary: rgb(255, 115, 0); /* #FF7300 */
+  --accent: rgb(242, 244, 246); /* #f2f4f6 */
+  --border: rgb(226, 232, 240); /* #e2e8f0 */
+}
+
+/* ===== Layout Principal ===== */
 .dashboardLayout {
   display: flex;
   min-height: 100vh;
   width: 100%;
-  background-color: #f9fafb;
+  background-color: var(--background);
 }
 
-.Sidebar {
-  width: 250px;
-  background-color: #1f2937;
-  padding: 1rem;
-  color: #ffffff;
-}
-
-.sidebarLogo {
-  display: flex;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-.sidebarTitle {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-left: 0.5rem;
-}
-
-.sidebarNav {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.navItem {
-  padding: 0.75rem 1rem;
-  color: #FF7300;
-  text-decoration: none;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-}
-
-.navItem:hover {
-  background-color: #374151;
-  border-radius: 0.25rem;
-}
-
-.navIcon {
-  margin-right: 0.5rem;
-}
-
-.logoutButton {
-  margin-top: auto;
-  padding: 0.75rem 1rem;
-  background-color: #FF7300;
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  width: 100%;
-}
-
-.logoutButton:hover {
-  background-color: rgba(255, 115, 0, 0.9);
-}
-
+/* ===== Conteúdo Principal ===== */
 .mainContent {
   flex: 1;
   padding: 1.5rem;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background);
 }
 
-.header {
+/* ===== Header ===== */
+.headerRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
+/* ===== Título ===== */
 .title {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: #111827;
-  margin: 0;
+  color: var(--foreground);
 }
 
+/* ===== Subtítulo ===== */
 .subtitle {
-  color: #6b7280;
-  margin: 0.5rem 0 0 0;
+  color: hsl(240, 3.8%, 46.1%); /* #64748b */
+  font-size: 0.875rem;
 }
 
+/* ===== Botão de Nova Entrega ===== */
 .newDeliveryButton {
-  background-color: #FF7300;
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
+  background-color: var(--primary);
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
   text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
 }
 
 .newDeliveryButton:hover {
-  background-color: rgba(255, 115, 0, 0.9);
+  background-color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
+/* ===== Campo de Busca ===== */
 .searchContainer {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .relative {
@@ -112,19 +90,118 @@
 
 .searchIcon {
   position: absolute;
-  left: 0.625rem; /* 2.5 * 0.25rem */
-  top: 0.625rem; /* 2.5 * 0.25rem */
-  height: 1rem; /* 4 * 0.25rem */
-  width: 1rem; /* 4 * 0.25rem */
-  color: #6b7280;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: hsl(240, 3.8%, 46.1%); /* #64748b */
+  height: 1rem;
+  width: 1rem;
 }
 
 .searchInput {
-  padding-left: 2rem; /* 8 * 0.25rem */
+  padding-left: 2rem;
   width: 100%;
   max-width: 400px;
+  border: 1px solid var(--border);
+  border-radius: 0.375rem;
+  background-color: var(--background);
+  color: var(--foreground);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  transition: all 0.2s ease-in-out;
 }
 
+.searchInput:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(255, 115, 0, 0.2);
+}
+
+/* ===== Contêiner da Tabela ===== */
+.tableContainer {
+  background-color: var(--background);
+  border-radius: 0.375rem;
+  border: 1px solid var(--border);
+  overflow-x: auto;
+}
+
+/* ===== Tabela ===== */
+.deliveryHistoryTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+/* ===== Cabeçalho da Tabela ===== */
+.deliveryHistoryTable thead {
+  background-color: var(--accent);
+}
+
+.deliveryHistoryTable th {
+  padding: 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--foreground);
+  border-bottom: 1px solid var(--border);
+}
+
+/* ===== Linha da Tabela ===== */
+.tableRow {
+  transition: all 0.2s ease-in-out;
+}
+
+.tableRow:hover {
+  background-color: var(--accent);
+  color: var(--foreground);
+}
+
+.tableRow td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--foreground);
+}
+
+/* ===== Status ===== */
+.status {
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  display: inline-block;
+  text-transform: capitalize;
+}
+
+.status.scheduled {
+  background-color: rgb(219, 234, 254); /* bg-blue-100 */
+  color: rgb(30, 64, 175); /* text-blue-800 */
+}
+
+.status.pending {
+  background-color: rgb(254, 249, 195); /* bg-yellow-100 */
+  color: rgb(146, 64, 14); /* text-yellow-800 */
+}
+
+.status.delivered {
+  background-color: rgb(220, 252, 231); /* bg-green-100 */
+  color: rgb(22, 101, 52); /* text-green-800 */
+}
+
+.status.canceled {
+  background-color: rgb(254, 226, 226); /* bg-red-100 */
+  color: rgb(153, 27, 27); /* text-red-800 */
+}
+
+/* ===== Link de Rastrear ===== */
+.trackLink {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.trackLink:hover {
+  text-decoration: underline;
+}
+
+/* ===== Paginação ===== */
 .pagination {
   margin-top: 1rem;
   display: flex;
@@ -132,10 +209,33 @@
   gap: 0.5rem;
 }
 
+/* ===== Carregando e Erro ===== */
 .loading,
 .error {
   text-align: center;
-  font-size: 1.2em;
-  color: #dc2626;
-  padding: 20px;
+  padding: 2rem;
+  color: rgb(220, 38, 38); /* #dc2626 */
+}
+
+/* ===== Responsividade ===== */
+@media (max-width: 768px) {
+  .mainContent {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .deliveryHistoryTable th,
+  .tableRow td {
+    padding: 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .trackLink {
+    padding: 0.5rem;
+    display: block;
+    text-align: center;
+  }
 }

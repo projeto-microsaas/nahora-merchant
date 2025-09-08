@@ -1,3 +1,38 @@
+/* Ajuste no título principal */
+.pageTitle {
+  font-size: 2px;
+  font-weight: 700;
+  color: #111827; /* agora bem escuro */
+  margin-bottom: 0.25rem;
+  background-color: #ffff;
+}
+
+/* Subtítulo */
+.pageSubtitle {
+  font-size: 1rem;
+  color: #94a3b8;
+}
+
+/* Conteúdo interno do card */
+.customer {
+  font-size: 0.875rem;   /* menor que o subtítulo */
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.address {
+  font-size: 0.75rem;    /* ainda menor */
+  color: #374151;
+  margin-bottom: 0.25rem;
+}
+
+.time {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: #6b7280;
+}
+
 /* Container principal */
 .activeDeliveriesContainer {
   min-height: 100vh;
@@ -40,7 +75,7 @@
 }
 
 .headerContent h1 {
-  font-size: 2rem;
+  font-size: 5rem;
   font-weight: 700;
   color: #f8fafc;
   margin-bottom: 0.5rem;
@@ -77,10 +112,10 @@
   width: 100%;
   max-width: 400px;
   padding: 0.75rem 1rem 0.75rem 2.5rem;
-  background-color: #1e293b;
-  border: 1px solid #334155;
-  border-radius: 0.5rem;
-  color: #f8fafc;
+  background-color:rgb(26, 32, 44);
+  border: 1px solid #3d3d3dff;
+  border-radius: 02px;
+  color: black;
   font-size: 0.875rem;
   transition: all 0.2s ease-in-out;
   
@@ -88,9 +123,9 @@
 
 .searchInput:focus {
   outline: none;
-  border-color: #6c3cff;
-  box-shadow: 0 0 0 3px rgba(108, 60, 255, 0.1);
-  background-color: #0f172a;
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(238, 71, 11, 0.1);
+  background-color: white
 }
 
 .searchInput::placeholder {
@@ -128,7 +163,7 @@
 
 /* Card de entrega */
 .deliveryCard {
-  background-color:rgb(201, 203, 205);
+  background-color:#ffff;
   border: 1px solid #334155;
   border-radius: 0.75rem;
   padding: 0;
@@ -149,24 +184,25 @@
   align-items: center;
   justify-content: space-between;
   padding: 1.25rem 1.25rem 0.75rem 1.25rem;
-  border-bottom: 1px solid #334155;
+  
 }
 
 .statCardHeader span:first-child {
-  font-size: 0.875rem;
+  font-size: 3px;
   font-weight: 600;
-  color: #f8fafc;
-  background-color: #334155;
-  padding: 0.25rem 0.75rem;
+  color: black;
+  background-color: #ffff;
+  padding: 0.75rem;
   border-radius: 0.375rem;
   font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 0.50rem;
 }
 
 /* Status badge */
 .statusBadge {
   display: inline-flex;
   align-items: center;
-  padding: 0.375rem 0.75rem;
+  padding: 0.75rem;
   border-radius: 9999px;
   font-size: 0.75rem;
   font-weight: 600;
@@ -176,7 +212,7 @@
 
 /* Variações do status badge */
 .statusPending {
-  background-color: rgba(251, 191, 36, 0.15);
+  background-color: rgba(168, 117, 83, 0.15);
   color: #fbbf24;
   border-color: rgba(251, 191, 36, 0.3);
 }
@@ -201,7 +237,7 @@
 
 /* Conteúdo do card */
 .deliveryContent {
-  padding: 1.25rem;
+  padding: 1.25rem 1.25rem 0.75rem 1.25rem;
 }
 
 .deliveryContent p:first-child {
@@ -227,8 +263,7 @@
 /* Footer do card */
 .deliveryFooter {
   padding: 0.75rem 1.25rem;
-  border-top: 1px solid #334155;
-  background-color: #0f172a;
+  background-color: white;
   display: flex;
   justify-content: flex-end;
 }
@@ -327,4 +362,10 @@
     background-color: #0f172a;
     border-color: #1e293b;
   }
+}
+
+
+.deliveryContent {
+  padding: 1.25rem;
+  text-align: center; /* centraliza cliente, endereço e tempo */
 }
