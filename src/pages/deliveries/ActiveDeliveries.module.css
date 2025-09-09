@@ -1,36 +1,25 @@
-/* Ajuste no título principal */
-.pageTitle {
-  font-size: 2px;
-  font-weight: 700;
-  color: #111827; /* agora bem escuro */
-  margin-bottom: 0.25rem;
-  background-color: #ffff;
-}
-
-/* Subtítulo */
-.pageSubtitle {
-  font-size: 1rem;
-  color: #94a3b8;
-}
 
 /* Conteúdo interno do card */
 .customer {
-  font-size: 0.875rem;   /* menor que o subtítulo */
+  font-size: 0.800rem;   /* menor que o subtítulo */
   font-weight: 600;
   color: #111827;
   margin-bottom: 0.25rem;
+  text-align: center; /* centraliza o nome do cliente */
 }
 
 .address {
   font-size: 0.75rem;    /* ainda menor */
   color: #374151;
   margin-bottom: 0.25rem;
+  text-align: center; /* centraliza o nome do cliente */
 }
 
 .time {
   font-size: 0.75rem;
   font-style: italic;
   color: #6b7280;
+  text-align: center; /* centraliza o nome do cliente */
 }
 
 /* Container principal */
@@ -75,9 +64,9 @@
 }
 
 .headerContent h1 {
-  font-size: 5rem;
+  font-size: 20px;
   font-weight: 700;
-  color: #f8fafc;
+  color: #111827;
   margin-bottom: 0.5rem;
 
 }
@@ -86,6 +75,9 @@
   color: #94a3b8;
   font-size: 1rem;
 }
+
+
+/* Botão de nova entrega */
 .newDeliveryButton {
   background-color: #f97316;
   color: white;
@@ -101,6 +93,8 @@
   background-color: rgba(249, 115, 22, 0.9);
 }
 
+
+
 /* Barra de pesquisa */
 .searchContainer {
   position: relative;
@@ -112,12 +106,13 @@
   width: 100%;
   max-width: 400px;
   padding: 0.75rem 1rem 0.75rem 2.5rem;
-  background-color:rgb(26, 32, 44);
+  background-color:white;
   border: 1px solid #3d3d3dff;
-  border-radius: 02px;
+  border-radius: 04px;
   color: black;
   font-size: 0.875rem;
   transition: all 0.2s ease-in-out;
+  border-radius: 0.375rem;
   
 }
 
@@ -142,6 +137,8 @@
   height: 1rem;
 }
 
+
+
 /* Grid de entregas */
 .deliveriesGrid {
   display: grid;
@@ -158,14 +155,19 @@
 @media (min-width: 1024px) {
   .deliveriesGrid {
     grid-template-columns: repeat(3, 1fr);
+     
+    
   }
 }
 
 /* Card de entrega */
 .deliveryCard {
-  background-color:#ffff;
-  border: 1px solid #334155;
-  border-radius: 0.75rem;
+  background-color:white;
+  border: 1px solid #64676cff;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 0;
   transition: all 0.2s ease-in-out;
   overflow: hidden;
