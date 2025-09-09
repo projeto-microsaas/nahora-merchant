@@ -1,19 +1,20 @@
-/* Variáveis Globais - Sidebar */
-
-/* Modo Claro */
+/* src/index.css */
 :root {
-  --sidebar-background: 0 0% 98%;        /* Fundo quase branco */
-  --sidebar-foreground: 240 5.3% 26.1%; /* Texto escuro */
-  --sidebar-primary: 30 100% 50%;        /* Laranja (#FF7300) */
-  --sidebar-accent: 240 4.8% 95.9%;      /* Hover cinza claro */
-  --sidebar-border: 220 13% 91%;         /* Borda sutil */
-}
-
-/* Modo Escuro */
-[data-theme="dark"] {
-  --sidebar-background: 240 5.9% 10%;    /* Fundo escuro */
-  --sidebar-foreground: 240 4.8% 95.9%;  /* Texto claro */
-  --sidebar-accent: 240 3.7% 15.9%;      /* Hover cinza escuro */
+  --border: #e5e7eb;
+  --text: #374151;
+  --muted-foreground: #6b7280;
+  --primary-color: #4f46e5;
+  --primary-hover: #4338ca;
+  --accent-color: #0ea5e9;
+  --background-light: #ffffff;
+  --background-dark: #080e15;
+  --text-light: #f8fafc;
+  --text-dark: #1e293b;
+  --input-bg: #1e293b;
+  --input-border: #334155;
+  --input-text: #f1f5f9;
+  --error-color: #ef4444;
+  --transition: 0.3s ease-in-out;
 }
 
 /* Classes Fallback */

@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider, Sidebar } from "../../components/ui/sidebar";
+import { Bike } from "lucide-react";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
 import { Search } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import DeliveryHistoryTable from "../../components/dashboard/DeliveryHistoryTable";
 import { Link } from "react-router-dom";
 import styles from "./History.module.css";
-import AppSidebar from "@/components/layout/AppSidebar";
+import AppSidebar from "../../components/layout/AppSidebar";
+
 
 // Error Boundary
 class ErrorBoundary extends React.Component {
@@ -20,9 +23,7 @@ class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
-      return (
-        <div>Erro capturado: {this.state.error?.message || "Erro desconhecido"}</div>
-      );
+      return <div>Erro capturado: {this.state.error?.message || "Erro desconhecido"}</div>;
     }
     return this.props.children;
   }
@@ -49,9 +50,7 @@ const History = () => {
         }
 
         const response = await fetch(
-          `http://localhost:5000/api/deliveries/history?search=${encodeURIComponent(
-            searchTerm
-          )}&page=${page}&limit=${limit}`,
+          `http://localhost:5000/api/deliveries/history?search=${encodeURIComponent(searchTerm)}&page=${page}&limit=${limit}`, // URL absoluta
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -59,9 +58,7 @@ const History = () => {
 
         if (!response.ok) {
           const errorText = await response.text();
-          throw new Error(
-            `Erro ao buscar histórico: ${response.status} - ${errorText}`
-          );
+          throw new Error(`Erro ao buscar histórico: ${response.status} - ${errorText}`);
         }
 
         const data = await response.json();
@@ -69,7 +66,6 @@ const History = () => {
           throw new Error("Dados de entregas inválidos: 'deliveries' não é um array");
         }
         if (isMounted) {
-          console.log("API Response:", data.deliveries); // Debug: Log the data
           setDeliveries(data.deliveries);
           setTotal(data.total || 0);
         }
@@ -109,20 +105,17 @@ const History = () => {
     <ErrorBoundary>
       <SidebarProvider>
         <div className={styles.dashboardLayout}>
-          <AppSidebar />
+                <AppSidebar />
           <main className={styles.mainContent}>
-            <header className={styles.headerRow}>
+            <header className={styles.header}>
               <div>
                 <h1 className={styles.title}>Histórico de Entregas</h1>
-                <p className={styles.subtitle}>
-                  Visualize o histórico completo das suas entregas.
-                </p>
+                <p className={styles.subtitle}>Visualize o histórico completo das suas entregas.</p>
               </div>
               <Link to="/new-delivery" className={styles.newDeliveryButton}>
                 Nova Entrega
               </Link>
             </header>
-
             <div className={styles.searchContainer}>
               <div className={styles.relative}>
                 <Search className={styles.searchIcon} />
@@ -135,70 +128,14 @@ const History = () => {
                 />
               </div>
             </div>
-
-            <div className={styles.tableContainer}>
-              <table className={styles.deliveryHistoryTable}>
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Cliente</th>
-                    <th>Email</th>
-                    <th>Telefone</th>
-                    <th>Endereço</th>
-                    <th>Status</th>
-                    <th>Data</th>
-                    <th>Rastrear</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {deliveries.map((delivery) => (
-                    <tr key={delivery._id} className={styles.tableRow}>
-                      <td>{delivery._id}</td>
-                      <td>{delivery.customer || "Sem nome"}</td>
-                      <td>{delivery.customerEmail || "Sem email"}</td>
-                      <td>{delivery.customerPhone || "Sem telefone"}</td>
-                      <td>{delivery.address || "Sem endereço"}</td>
-                      <td>
-                        <span
-                          className={`${styles.status} ${
-                            styles[delivery.status?.toLowerCase()]
-                          }`}
-                        >
-                          {delivery.status || "Desconhecido"}
-                        </span>
-                      </td>
-                      <td>
-                        {delivery.createdAt
-                          ? new Date(delivery.createdAt).toLocaleString()
-                          : "Sem data"}
-                      </td>
-                      <td>
-                        <Link
-                          to={`/deliveries/${delivery._id}`}
-                          className={styles.trackLink}
-                        >
-                          Rastrear
-                        </Link>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
+            <DeliveryHistoryTable deliveries={deliveries} />
             {total > limit && (
               <div className={styles.pagination}>
-                <Button
-                  onClick={() => handlePageChange(page - 1)}
-                  disabled={page === 1}
-                >
+                <Button onClick={() => handlePageChange(page - 1)} disabled={page === 1}>
                   Anterior
                 </Button>
                 <span>{`Página ${page} de ${Math.ceil(total / limit)}`}</span>
-                <Button
-                  onClick={() => handlePageChange(page + 1)}
-                  disabled={page === Math.ceil(total / limit)}
-                >
+                <Button onClick={() => handlePageChange(page + 1)} disabled={page === Math.ceil(total / limit)}>
                   Próxima
                 </Button>
               </div>
