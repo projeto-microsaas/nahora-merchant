@@ -7,19 +7,24 @@
 
 /* ===== Variáveis de Cores ===== */
 :global([data-theme="dark"]) {
-  --background: rgb(26, 32, 44); /* #1a202c */
-  --foreground: rgb(242, 244, 246); /* #e2e8f0 */
-  --primary: rgb(255, 115, 0); /* #FF7300 */
-  --accent: rgb(38, 40, 43); /* #2d3748 */
-  --border: rgb(45, 55, 72); /* #2d3748 */
+  --background: rgb(26, 32, 44);
+  --foreground: rgb(242, 244, 246);
+  --primary: rgb(255, 115, 0);
+  --accent: rgb(38, 40, 43);
+  --border: rgb(45, 55, 72);
 }
 
 :global([data-theme="light"]) {
-  --background: rgb(250, 250, 250); /* #fafafa */
-  --foreground: rgb(62, 66, 70); /* #3e4246 */
-  --primary: rgb(255, 115, 0); /* #FF7300 */
-  --accent: rgb(242, 244, 246); /* #f2f4f6 */
-  --border: rgb(226, 232, 240); /* #e2e8f0 */
+  --background: rgb(250, 250, 250);
+  --foreground: rgb(62, 66, 70);
+  --primary: rgb(255, 115, 0);
+  --accent: rgb(242, 244, 246);
+  --border: rgb(226, 232, 240);
+}
+
+:global(html, body) {
+  height: 100%;
+  overflow-y: auto;
 }
 
 /* ===== Layout Principal ===== */
@@ -30,62 +35,77 @@
   background-color: var(--background);
 }
 
-/* ===== Conteúdo Principal ===== */
 .mainContent {
   flex: 1;
   padding: 1.5rem;
-  overflow: auto;
   display: flex;
   flex-direction: column;
   background-color: var(--background);
 }
 
-/* ===== Header ===== */
-.headerRow {
+/* ===== Cabeçalho ===== */
+.pageHeader {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #334155;
 }
 
-/* ===== Título ===== */
-.title {
-  font-size: 1.5rem;
+.headerContent h1 {
+  font-size: 20px;
   font-weight: 700;
-  color: var(--foreground);
+  color: #111827;
+  margin-bottom: 0.5rem;
 }
 
-/* ===== Subtítulo ===== */
-.subtitle {
-  color: hsl(240, 3.8%, 46.1%); /* #64748b */
-  font-size: 0.875rem;
+.headerContent p {
+  color: #94a3b8;
+  font-size: 1rem;
 }
 
-/* ===== Botão de Nova Entrega ===== */
+/* ===== Botão de nova entrega ===== */
 .newDeliveryButton {
-  background-color: var(--primary);
-  color: #ffffff;
+  background-color: #f97316;
+  color: white;
   padding: 0.5rem 1rem;
   border-radius: 0.375rem;
   text-decoration: none;
   font-size: 0.875rem;
-  font-weight: 500;
-  transition: all 0.2s ease-in-out;
+  transition: background-color 0.2s;
+  margin-bottom: 6.5rem;
 }
 
 .newDeliveryButton:hover {
-  background-color: var(--accent);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  background-color: rgba(249, 115, 22, 0.9);
 }
 
-/* ===== Campo de Busca ===== */
+/* ===== Barra de pesquisa ===== */
 .searchContainer {
-  margin-bottom: 1rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-right: auto;
+  margin-top: 3rem;
 }
 
-.relative {
-  position: relative;
+.searchInput {
+  width: 100%;
+  max-width: 250px;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  background-color: white;
+  border: 1px solid #3d3d3dff;
+  border-radius: 0.375rem;
+  color: black;
+  font-size: 0.875rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(238, 71, 11, 0.1);
 }
 
 .searchIcon {
@@ -93,75 +113,76 @@
   left: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
-  color: hsl(240, 3.8%, 46.1%); /* #64748b */
-  height: 1rem;
+  color: #64748b;
   width: 1rem;
+  height: 1rem;
 }
 
-.searchInput {
-  padding-left: 2rem;
-  width: 100%;
-  max-width: 400px;
-  border: 1px solid var(--border);
-  border-radius: 0.375rem;
-  background-color: var(--background);
-  color: var(--foreground);
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
-  transition: all 0.2s ease-in-out;
-}
-
-.searchInput:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(255, 115, 0, 0.2);
+.searchInput::placeholder {
+  color: #64748b;
 }
 
 /* ===== Contêiner da Tabela ===== */
 .tableContainer {
-  background-color: var(--background);
+  width: 100%;
+  overflow-x: auto; /* scroll horizontal */
   border-radius: 0.375rem;
   border: 1px solid var(--border);
-  overflow-x: auto;
+  margin-top: 3rem;
 }
 
 /* ===== Tabela ===== */
 .deliveryHistoryTable {
   width: 100%;
+  min-width: 600px; /* força scroll em telas pequenas */
   border-collapse: collapse;
   font-size: 0.875rem;
 }
 
-/* ===== Cabeçalho da Tabela ===== */
+/* ===== Cabeçalho ===== */
 .deliveryHistoryTable thead {
-  background-color: var(--accent);
+  background-color: #1e293b; /* azul escuro */
 }
 
 .deliveryHistoryTable th {
   padding: 0.75rem;
   text-align: left;
   font-weight: 600;
-  color: var(--foreground);
+  color: #f8fafc; /* branco */
   border-bottom: 1px solid var(--border);
+  white-space: nowrap;
 }
 
-/* ===== Linha da Tabela ===== */
-.tableRow {
-  transition: all 0.2s ease-in-out;
-}
-
-.tableRow:hover {
-  background-color: var(--accent);
-  color: var(--foreground);
-}
-
+/* ===== Linhas ===== */
 .tableRow td {
   padding: 0.75rem;
   border-bottom: 1px solid var(--border);
   color: var(--foreground);
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* ===== Status ===== */
+/* Linhas alternadas */
+.evenRow td {
+  background-color: #ffffff;
+}
+
+.oddRow td {
+  background-color: #f9fafb;
+}
+
+/* Hover moderno */
+.tableRow:hover td {
+  background-color: #f3f4f6;
+  color: #111827;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease-in-out;
+}
+
+/* ===== Status colorido ===== */
 .status {
   font-weight: 600;
   padding: 0.25rem 0.5rem;
@@ -171,30 +192,33 @@
 }
 
 .status.scheduled {
-  background-color: rgb(219, 234, 254); /* bg-blue-100 */
-  color: rgb(30, 64, 175); /* text-blue-800 */
+  background-color: rgb(219, 234, 254);
+  color: rgb(30, 64, 175);
 }
 
 .status.pending {
-  background-color: rgb(254, 249, 195); /* bg-yellow-100 */
-  color: rgb(146, 64, 14); /* text-yellow-800 */
+  background-color: rgb(254, 249, 195);
+  color: rgb(146, 64, 14);
 }
 
 .status.delivered {
-  background-color: rgb(220, 252, 231); /* bg-green-100 */
-  color: rgb(22, 101, 52); /* text-green-800 */
+  background-color: rgb(220, 252, 231);
+  color: rgb(22, 101, 52);
 }
 
 .status.canceled {
-  background-color: rgb(254, 226, 226); /* bg-red-100 */
-  color: rgb(153, 27, 27); /* text-red-800 */
+  background-color: rgb(254, 226, 226);
+  color: rgb(153, 27, 27);
 }
 
-/* ===== Link de Rastrear ===== */
+/* ===== Link de rastrear ===== */
 .trackLink {
   color: var(--primary);
   text-decoration: none;
   font-weight: 600;
+  display: inline-block;
+  min-width: 50px;
+  white-space: nowrap;
 }
 
 .trackLink:hover {
@@ -214,13 +238,15 @@
 .error {
   text-align: center;
   padding: 2rem;
-  color: rgb(220, 38, 38); /* #dc2626 */
+  color: rgb(220, 38, 38);
 }
 
 /* ===== Responsividade ===== */
 @media (max-width: 768px) {
   .mainContent {
-    padding: 1rem;
+    flex: 1;
+    height: 100vh;
+    overflow-y: auto;
   }
 
   .title {
@@ -234,8 +260,7 @@
   }
 
   .trackLink {
-    padding: 0.5rem;
-    display: block;
-    text-align: center;
+    display: inline-block;
+    font-size: 0.75rem;
   }
 }

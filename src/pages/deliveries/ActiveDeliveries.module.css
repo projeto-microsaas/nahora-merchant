@@ -99,7 +99,7 @@
 .searchContainer {
   position: relative;
   margin-bottom: 2rem;
-  margin-top: 4rem; /* novo espaçamento acima da barra de busca */
+  margin-top: 6rem; /* novo espaçamento acima da barra de busca */
 }
 
 .searchInput {
@@ -159,6 +159,8 @@
     
   }
 }
+
+
 
 /* Card de entrega */
 .deliveryCard {

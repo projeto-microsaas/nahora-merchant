@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { SidebarProvider, Sidebar } from "../../components/ui/sidebar";
-import { Bike } from "lucide-react";
+import { SidebarProvider } from "../../components/ui/sidebar";
 import { Button } from "../../components/ui/button";
-import { Input } from "../../components/ui/input";
-import { Search } from "lucide-react";
 import DeliveryHistoryTable from "../../components/dashboard/DeliveryHistoryTable";
 import { Link } from "react-router-dom";
 import styles from "./History.module.css";
 import AppSidebar from "../../components/layout/AppSidebar";
-
+import { Search } from "lucide-react";
 
 // Error Boundary
 class ErrorBoundary extends React.Component {
@@ -45,15 +42,13 @@ const History = () => {
       setError(null);
       try {
         const token = localStorage.getItem("authToken");
-        if (!token) {
-          throw new Error("Token de autenticação não encontrado");
-        }
+        if (!token) throw new Error("Token de autenticação não encontrado");
 
         const response = await fetch(
-          `http://localhost:5000/api/deliveries/history?search=${encodeURIComponent(searchTerm)}&page=${page}&limit=${limit}`, // URL absoluta
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
+          `http://localhost:5000/api/deliveries/history?search=${encodeURIComponent(
+            searchTerm
+          )}&page=${page}&limit=${limit}`,
+          { headers: { Authorization: `Bearer ${token}` } }
         );
 
         if (!response.ok) {
@@ -65,6 +60,7 @@ const History = () => {
         if (!Array.isArray(data.deliveries)) {
           throw new Error("Dados de entregas inválidos: 'deliveries' não é um array");
         }
+
         if (isMounted) {
           setDeliveries(data.deliveries);
           setTotal(data.total || 0);
@@ -93,49 +89,53 @@ const History = () => {
     }
   };
 
-  if (loading) {
-    return <div className={styles.loading}>Carregando...</div>;
-  }
-
-  if (error) {
-    return <div className={styles.error}>Erro: {error}</div>;
-  }
+  if (loading) return <div className={styles.loading}>Carregando...</div>;
+  if (error) return <div className={styles.error}>Erro: {error}</div>;
 
   return (
     <ErrorBoundary>
       <SidebarProvider>
         <div className={styles.dashboardLayout}>
-                <AppSidebar />
+          <AppSidebar />
           <main className={styles.mainContent}>
             <header className={styles.header}>
               <div>
                 <h1 className={styles.title}>Histórico de Entregas</h1>
-                <p className={styles.subtitle}>Visualize o histórico completo das suas entregas.</p>
+                <p className={styles.subtitle}>
+                  Visualize o histórico completo das suas entregas.
+                </p>
               </div>
               <Link to="/new-delivery" className={styles.newDeliveryButton}>
                 Nova Entrega
               </Link>
             </header>
+
+            {/* Campo de busca */}
             <div className={styles.searchContainer}>
-              <div className={styles.relative}>
-                <Search className={styles.searchIcon} />
-                <Input
-                  type="search"
-                  placeholder="Buscar no histórico por cliente, endereço ou ID..."
-                  className={styles.searchInput}
-                  value={searchTerm}
-                  onChange={handleSearch}
-                />
-              </div>
+              <Search className={styles.searchIcon} />
+              <input
+                type="search"
+                placeholder="Buscar no histórico por cliente, endereço ou ID..."
+                className={styles.searchInput}
+                value={searchTerm}
+                onChange={handleSearch}
+              />
             </div>
+
+            {/* Tabela */}
             <DeliveryHistoryTable deliveries={deliveries} />
+
+            {/* Paginação */}
             {total > limit && (
               <div className={styles.pagination}>
                 <Button onClick={() => handlePageChange(page - 1)} disabled={page === 1}>
                   Anterior
                 </Button>
                 <span>{`Página ${page} de ${Math.ceil(total / limit)}`}</span>
-                <Button onClick={() => handlePageChange(page + 1)} disabled={page === Math.ceil(total / limit)}>
+                <Button
+                  onClick={() => handlePageChange(page + 1)}
+                  disabled={page === Math.ceil(total / limit)}
+                >
                   Próxima
                 </Button>
               </div>
