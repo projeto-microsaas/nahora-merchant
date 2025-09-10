@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../../lib/axios';
-import { socket } from '../../lib/axios'; // Usando a instância WebSocket do axios.js
+import socket from '../../lib/socket'; // Corrigir importação
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Activity } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './DeliveriesDashboard.module.css';
 import DashboardLayout from '../../components/layout/DashboardLayout';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer
+} from "recharts";
 
 const DeliveriesDashboard = () => {
   const [stats, setStats] = useState({});
@@ -20,6 +30,7 @@ const DeliveriesDashboard = () => {
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (token) {
+      socket.connect(); // Linha 67: Conectar ao WebSocket
       fetchData(token);
       socket.on('deliveryUpdate', (data) => {
         setAlerts((prev) => [...prev, { ...data, id: Date.now(), timestamp: new Date().toLocaleTimeString() }]);
@@ -34,6 +45,7 @@ const DeliveriesDashboard = () => {
       return () => {
         socket.off('deliveryUpdate');
         socket.off('newDelivery');
+        socket.disconnect();
       };
     } else {
       setError('Nenhum token de autenticação encontrado.');
@@ -103,29 +115,6 @@ const DeliveriesDashboard = () => {
   if (error) return <div className={styles.error}>{error}</div>;
 
   const dailyDeliveries = stats.dailyDeliveries || {};
-  const chartData = {
-    labels: Object.keys(dailyDeliveries).length > 0 ? Object.keys(dailyDeliveries) : ['Dia 1', 'Dia 2', 'Dia 3', 'Dia 4', 'Dia 5', 'Dia 6', 'Dia 7'],
-    datasets: [
-      {
-        label: 'Entregas',
-        data: Object.values(dailyDeliveries).length > 0 ? Object.values(dailyDeliveries).map(v => v.v || 0) : [0, 0, 0, 0, 0, 0, 0],
-        backgroundColor: '#FF7300',
-        borderColor: '#FF7300',
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const chartConfig = JSON.stringify({
-    type: 'bar',
-    data: chartData,
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: { y: { beginAtZero: true, title: { display: true, text: 'Número de Entregas' } }, x: { title: { display: true, text: 'Dias' } } },
-      plugins: { legend: { position: 'top' }, title: { display: true, text: 'Entregas por Dia' } },
-    },
-  });
 
   return (
     <DashboardLayout>
@@ -216,7 +205,24 @@ const DeliveriesDashboard = () => {
             </CardHeader>
             <CardContent className={styles.chartContent}>
               <p>Total de entregas dos últimos 7 dias</p>
-              <div data-config={chartConfig} className={styles.chartContainer} />
+              <div className={styles.chartContainer}>
+                <ResponsiveContainer width="100%" height={250}>
+                  <BarChart
+                    data={Object.entries(dailyDeliveries).map(([day, value]) => ({
+                      day,
+                      entregas: value?.v || 0,
+                    }))}
+                    margin={{ top: 20, right: 20, left: 0, bottom: 20 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="day" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="entregas" fill="#FF7300" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
             </CardContent>
           </Card>
           <Card className={styles.statCard}>

@@ -1,8 +1,10 @@
+// src/components/merchant/delivery/ProductList.jsx
 import React, { useState, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { Search } from 'lucide-react';
 import CartItemCard from './CartItemCard';
 import axios from 'axios';
+import socket from '../../../lib/socket'; // Corrigir importação
 import styles from './ProductList.module.css';
 
 const ProductList = () => {
@@ -14,34 +16,34 @@ const ProductList = () => {
   const selectedProducts = watch('order.products') || [];
 
   useEffect(() => {
+    socket.connect();
     const fetchProducts = async () => {
       setLoading(true);
       setError(null);
       try {
         const token = localStorage.getItem('authToken');
-        console.log('Token recuperado do localStorage:', token); // Depuração
+        console.log('Token recuperado do localStorage:', token);
         if (!token) {
           throw new Error('Token de autenticação não encontrado. Faça login novamente.');
         }
         const response = await axios.get('/api/products', {
-          headers: { 'Authorization': `Bearer ${token}` }, // Força o cabeçalho para depuração
+          headers: { Authorization: `Bearer ${token}` },
         });
         console.log('Resposta da API:', response.data);
-        if (Array.isArray(response.data)) {
-          setProducts(response.data);
-        } else if (Array.isArray(response.data.products)) {
-          setProducts(response.data.products);
-        } else {
-          setProducts([]);
-        }
+        setProducts(Array.isArray(response.data) ? response.data : response.data.products || []);
       } catch (error) {
-        console.error('Erro ao buscar produtos:', error.response?.data || error.message);
+        console.error('Erro ao buscar produtos:', {
+          message: error.message,
+          response: error.response ? error.response.data : null,
+          status: error.response ? error.response.status : null,
+        });
         setError(`Erro ao carregar produtos: ${error.response?.data?.message || error.message}`);
       } finally {
         setLoading(false);
       }
     };
     fetchProducts();
+    return () => socket.disconnect();
   }, []);
 
   const safeProducts = Array.isArray(products) ? products : [];

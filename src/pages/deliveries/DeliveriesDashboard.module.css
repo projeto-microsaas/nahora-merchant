@@ -64,6 +64,9 @@
   background-color: rgba(249, 115, 22, 0.9);
 }
 
+
+
+
 /* Main Content */
 .mainContent {
   flex: 1;
@@ -134,6 +137,9 @@
   background-color: rgba(249, 115, 22, 0.9);
 }
 
+
+
+
 /* Estatísticas Grid */
 .statsGrid {
   display: grid;
@@ -172,12 +178,15 @@
   color: #6b7280;
 }
 
+
+
 /* Gráficos */
 .chartsGrid {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 1rem;
   margin-bottom: 2rem;
+ 
 }
 
 .performanceCard {
@@ -190,15 +199,36 @@
 }
 
 .chartContent {
-  padding: 1rem;
+  padding: 2rem;
   font-size: 0.875rem;
   color: #6b7280;
 }
 
+
+
 .chartContainer {
-  height: 200px;
+  height: 150px;
   width: 100%;
+  padding:1 rem;
+  background-color: #f9fafb;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 }
+
+
+.cardTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-left: 1rem;
+}
+
+
+
+
 
 /* Status do Sistema */
 .statCard:nth-child(2) .statCardContent {
@@ -213,6 +243,9 @@
   border-radius: 0.25rem;
   font-size: 0.75rem;
 }
+
+
+
 
 /* Entregas Ativas */
 .deliveriesSection {
@@ -319,6 +352,10 @@
   text-decoration: underline;
 }
 
+
+
+
+
 /* Histórico de Entregas */
 .historySection {
   margin-top: 2rem;
@@ -329,6 +366,11 @@
   font-weight: 600;
   margin-bottom: 1rem;
 }
+
+
+
+
+
 
 /* Alertas */
 .alertsSection {
@@ -362,6 +404,11 @@
   padding: 20px;
 }
 
+
+
+
+
+
 /* Responsivo */
 @media (max-width: 1024px) {
   .chartsGrid {
@@ -392,3 +439,4 @@
     width: 100%;
   }
 }
+
