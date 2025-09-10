@@ -25,7 +25,9 @@ const ActiveDeliveries = () => {
         });
         setActiveDeliveries(deliveriesResponse.data || []);
       } catch (error) {
-        setError(`Erro ao carregar dados: ${error.response?.data?.message || error.message}`);
+        setError(
+          `Erro ao carregar dados: ${error.response?.data?.message || error.message}`
+        );
       } finally {
         setLoading(false);
       }
@@ -34,10 +36,10 @@ const ActiveDeliveries = () => {
   }, []);
 
   const handleTrackClick = (id) => {
+    // Aqui removemos o ":" e usamos o ID real
     navigate(`/delivery-status/${id}`, { replace: true });
   };
 
-  // Filtro de busca
   const filteredDeliveries = activeDeliveries.filter((delivery) => {
     const searchLower = search.toLowerCase();
     return (
@@ -71,7 +73,7 @@ const ActiveDeliveries = () => {
             placeholder="Buscar entregas por cliente, endereço ou ID..."
             className={styles.searchInput}
             value={search}
-            onChange={e => setSearch(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
           />
         </div>
 
