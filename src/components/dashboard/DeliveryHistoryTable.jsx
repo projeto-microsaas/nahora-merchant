@@ -39,12 +39,11 @@ const DeliveryHistoryTable = ({ deliveries }) => {
               </td>
               <td>
                 <Link
-  to={`/delivery-status/${delivery._id}`}
-  className={styles.trackLink}
->
-  Rastrear 
-</Link>
-
+                  to={`/delivery-status/${delivery._id}`}
+                  className={styles.trackLink}
+                >
+                  Rastrear
+                </Link>
               </td>
             </tr>
           ))}

@@ -7,25 +7,6 @@ import styles from "./History.module.css";
 import AppSidebar from "../../components/layout/AppSidebar";
 import { Search } from "lucide-react";
 
-// Error Boundary
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error };
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return <div>Erro capturado: {this.state.error?.message || "Erro desconhecido"}</div>;
-    }
-    return this.props.children;
-  }
-}
-
 const History = () => {
   const [deliveries, setDeliveries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,9 +18,11 @@ const History = () => {
 
   useEffect(() => {
     let isMounted = true;
+
     const fetchHistory = async () => {
       setLoading(true);
       setError(null);
+
       try {
         const token = localStorage.getItem("authToken");
         if (!token) throw new Error("Token de autenticação não encontrado");
@@ -47,7 +30,7 @@ const History = () => {
         const response = await fetch(
           `http://localhost:5000/api/deliveries/history?search=${encodeURIComponent(
             searchTerm
-          )}&page=${page}&limit=${limit}`,
+          )}&page=${page}&limit=${limit}&status=all`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
@@ -93,57 +76,55 @@ const History = () => {
   if (error) return <div className={styles.error}>Erro: {error}</div>;
 
   return (
-    <ErrorBoundary>
-      <SidebarProvider>
-        <div className={styles.dashboardLayout}>
-          <AppSidebar />
-          <main className={styles.mainContent}>
-            <header className={styles.header}>
-              <div>
-                <h1 className={styles.title}>Histórico de Entregas</h1>
-                <p className={styles.subtitle}>
-                  Visualize o histórico completo das suas entregas.
-                </p>
-              </div>
-              <Link to="/new-delivery" className={styles.newDeliveryButton}>
-                Nova Entrega
-              </Link>
-            </header>
-
-            {/* Campo de busca */}
-            <div className={styles.searchContainer}>
-              <Search className={styles.searchIcon} />
-              <input
-                type="search"
-                placeholder="Buscar no histórico por cliente, endereço ou ID..."
-                className={styles.searchInput}
-                value={searchTerm}
-                onChange={handleSearch}
-              />
+    <SidebarProvider>
+      <div className={styles.dashboardLayout}>
+        <AppSidebar />
+        <main className={styles.mainContent}>
+          <header className={styles.header}>
+            <div>
+              <h1 className={styles.title}>Histórico de Entregas</h1>
+              <p className={styles.subtitle}>
+                Visualize o histórico completo das suas entregas.
+              </p>
             </div>
+            <Link to="/new-delivery" className={styles.newDeliveryButton}>
+              Nova Entrega
+            </Link>
+          </header>
 
-            {/* Tabela */}
-            <DeliveryHistoryTable deliveries={deliveries} />
+          {/* Campo de busca */}
+          <div className={styles.searchContainer}>
+            <Search className={styles.searchIcon} />
+            <input
+              type="search"
+              placeholder="Buscar no histórico por cliente, endereço ou ID..."
+              className={styles.searchInput}
+              value={searchTerm}
+              onChange={handleSearch}
+            />
+          </div>
 
-            {/* Paginação */}
-            {total > limit && (
-              <div className={styles.pagination}>
-                <Button onClick={() => handlePageChange(page - 1)} disabled={page === 1}>
-                  Anterior
-                </Button>
-                <span>{`Página ${page} de ${Math.ceil(total / limit)}`}</span>
-                <Button
-                  onClick={() => handlePageChange(page + 1)}
-                  disabled={page === Math.ceil(total / limit)}
-                >
-                  Próxima
-                </Button>
-              </div>
-            )}
-          </main>
-        </div>
-      </SidebarProvider>
-    </ErrorBoundary>
+          {/* Tabela */}
+          <DeliveryHistoryTable deliveries={deliveries} />
+
+          {/* Paginação */}
+          {total > limit && (
+            <div className={styles.pagination}>
+              <Button onClick={() => handlePageChange(page - 1)} disabled={page === 1}>
+                Anterior
+              </Button>
+              <span>{`Página ${page} de ${Math.ceil(total / limit)}`}</span>
+              <Button
+                onClick={() => handlePageChange(page + 1)}
+                disabled={page === Math.ceil(total / limit)}
+              >
+                Próxima
+              </Button>
+            </div>
+          )}
+        </main>
+      </div>
+    </SidebarProvider>
   );
 };
 
