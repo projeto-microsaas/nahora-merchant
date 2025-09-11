@@ -12,6 +12,7 @@ const RecipientInfo = () => {
       <FormField
         control={control}
         name="recipient.name"
+        rules={{ required: "Nome do destinatário é obrigatório." }}
         render={({ field }) => (
           <FormItem className={styles.field}>
             <div className={styles.labelContainer}>
@@ -19,7 +20,12 @@ const RecipientInfo = () => {
               <FormLabel>Nome</FormLabel>
             </div>
             <FormControl>
-              <input {...field} className={styles.input} placeholder="Nome" />
+              <input 
+                {...field} 
+                type="text"
+                className={styles.input} 
+                placeholder="Nome" 
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -28,6 +34,7 @@ const RecipientInfo = () => {
       <FormField
         control={control}
         name="recipient.phone"
+        rules={{ required: "Telefone é obrigatório." }}
         render={({ field }) => (
           <FormItem className={styles.field}>
             <div className={styles.labelContainer}>
@@ -35,7 +42,12 @@ const RecipientInfo = () => {
               <FormLabel>Telefone</FormLabel>
             </div>
             <FormControl>
-              <input {...field} className={styles.input} placeholder="Telefone" />
+              <input 
+                {...field} 
+                type="tel"
+                className={styles.input} 
+                placeholder="Telefone" 
+              />
             </FormControl>
             <FormMessage />
           </FormItem>

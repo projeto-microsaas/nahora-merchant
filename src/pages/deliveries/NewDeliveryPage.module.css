@@ -1,16 +1,60 @@
-/* ===== Fontes e reset básico ===== */
+/* ===== Fontes ===== */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :global(html) {
   font-family: 'Inter', system-ui, sans-serif;
 }
 
-/* ===== Container da página ===== */
+/* ===== Variáveis de Cores ===== */
+:global([data-theme="dark"]) {
+  --background: rgb(26, 32, 44);
+  --foreground: rgb(242, 244, 246);
+  --primary: rgb(255, 115, 0);
+  --accent: rgb(38, 40, 43);
+  --border: rgb(45, 55, 72);
+}
+
+:global([data-theme="light"]) {
+  --background: rgb(250, 250, 250);
+  --foreground: rgb(62, 66, 70);
+  --primary: rgb(255, 115, 0);
+  --accent: rgb(242, 244, 246);
+  --border: rgb(226, 232, 240);
+}
+
+:global(html, body) {
+  height: 100%;
+  margin: 0;
+  overflow-y: auto;
+}
+
+/* ===== Layout Principal ===== */
 .pageContainer {
-  background-color: #0f172a;
-  padding: 2rem 1.5rem;
+  display: flex;
   min-height: 100vh;
-  color: #f1f5f9;
+  width: 100%;
+  background-color: var(--background);
+}
+
+/* ===== Sidebar Lateral (250px, full-height, sticky) ===== */
+.sidebar {
+  width: 250px;
+  min-height: 100vh;
+  position: sticky;
+  top: 0;
+  background-color: #1e293b;
+  border-right: 1px solid var(--border);
+  padding: 1.5rem;
+  box-sizing: border-box;
+  z-index: 1000;
+}
+
+/* ===== Conteúdo Principal (Grid de Cards ao Lado da Sidebar) ===== */
+.mainContent {
+  flex: 1;
+  padding: 2rem 1.5rem;
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
 /* ===== Título principal ===== */
@@ -87,7 +131,7 @@
   padding: 1.5rem;
 }
 
-/* ===== Utilitário para ícones (caso use classe .icon) ===== */
+/* ===== Utilitário para ícones ===== */
 .icon {
   width: 1.25rem;
   height: 1.25rem;
@@ -147,15 +191,15 @@
 }
 
 .addressField.street {
-  flex: 2; /* Logradouro mais longo */
+  flex: 2;
 }
 
 .addressField.number {
-  flex: 0.5; /* Número mais curto */
+  flex: 0.5;
 }
 
 .addressField.neighborhood {
-  flex: 1; /* Bairro com tamanho padrão */
+  flex: 1;
 }
 
 .addressField input,
@@ -178,9 +222,28 @@
 
 /* ===== Estilos para OrderInfo (Instruções) ===== */
 .orderField {
-  flex: 1; /* Igualar o tamanho dos outros campos */
+  flex: 1;
 }
 
 .orderField.instructions {
-  margin-top: 1rem; /* Espaçamento após os outros campos */
+  margin-top: 1rem;
+}
+
+/* ===== Responsividade (Sidebar empilha em mobile) ===== */
+@media (max-width: 768px) {
+  .pageContainer {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    min-height: auto;
+    position: relative;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mainContent {
+    padding: 1rem;
+  }
 }
