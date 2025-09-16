@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import DashboardLayout from '../../components/layout/DashboardLayout';
@@ -35,8 +34,21 @@ const DeliveryStatusPage = () => {
     if (id) fetchDelivery(); // Só busca se o ID existir
   }, [id]);
 
-  if (loading) return <DashboardLayout><p className={styles.loading}>Carregando...</p></DashboardLayout>;
-  if (error) return <DashboardLayout><p className={styles.error}>{error}</p></DashboardLayout>;
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <p className={styles.loading}>Carregando...</p>
+      </DashboardLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <DashboardLayout>
+        <p className={styles.error}>{error}</p>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>
@@ -46,11 +58,17 @@ const DeliveryStatusPage = () => {
         <p><strong>Cliente:</strong> {delivery.customer}</p>
         <p><strong>Endereço:</strong> {delivery.address}</p>
         <p><strong>Status:</strong> {delivery.status}</p>
-        {delivery.completedAt && (
-          <p><strong>Concluída em:</strong> {new Date(delivery.completedAt).toLocaleString()}</p>
+
+        {delivery.instructions && (
+          <p><strong>Observações:</strong> {delivery.instructions}</p>
         )}
+
         {delivery.note && (
           <p><strong>Nota:</strong> {delivery.note}</p>
+        )}
+
+        {delivery.completedAt && (
+          <p><strong>Concluída em:</strong> {new Date(delivery.completedAt).toLocaleString()}</p>
         )}
       </div>
     </DashboardLayout>

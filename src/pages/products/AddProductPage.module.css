@@ -14,8 +14,8 @@
 .mainContent {
   flex-grow: 1;
   padding: 2rem 1.5rem;
-  background-color: #0f172a;
-  color: #f1f5f9;
+  background-color: white;
+  color: #0f172a;
   overflow-y: auto;
 }
 
@@ -23,6 +23,7 @@
 .pageContainer {
   max-width: 800px;
   margin: 0 auto;
+  
 }
 
 /* ===== Título principal ===== */
@@ -30,18 +31,19 @@
   font-size: 1.75rem;
   font-weight: 600;
   margin-bottom: 2rem;
-  color: #ffffff;
+  color: #0f172a;
   line-height: 1.2;
 }
 
 /* ===== Cards ===== */
 .card {
-  background-color: #1e293b;
+  background-color: white;
   border-radius: 0.75rem;
   border: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   margin-bottom: 1.5rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  color:#1e293b;
 }
 
 .card:hover {
@@ -66,7 +68,7 @@
 
 /* ===== Conteúdo do card ===== */
 .cardContent {
-  padding: 1.5rem;
+  padding: 2rem;
 }
 
 /* ===== Formulário ===== */

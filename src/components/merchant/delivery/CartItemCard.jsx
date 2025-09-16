@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react';  
 import { useFormContext } from 'react-hook-form';
 import styles from './CartItemCard.module.css';
 
@@ -9,12 +9,12 @@ const CartItemCard = ({ product, index }) => {
   const handleQuantityChange = (newQuantity) => {
     const updatedProducts = [...selectedProducts];
     updatedProducts[index] = { ...updatedProducts[index], quantity: newQuantity };
-    setValue('order.products', updatedProducts);
+    setValue('order.products', updatedProducts, { shouldValidate: true, shouldDirty: true });
   };
 
   const handleRemove = () => {
     const updatedProducts = selectedProducts.filter((_, i) => i !== index);
-    setValue('order.products', updatedProducts);
+    setValue('order.products', updatedProducts, { shouldValidate: true, shouldDirty: true });
   };
 
   return (
@@ -25,6 +25,7 @@ const CartItemCard = ({ product, index }) => {
       </div>
       <div className={styles.quantityControl}>
         <button
+          type="button"
           onClick={() => handleQuantityChange(Math.max(1, product.quantity - 1))}
           className={styles.quantityButton}
         >
@@ -32,13 +33,18 @@ const CartItemCard = ({ product, index }) => {
         </button>
         <span className={styles.quantity}>{product.quantity}</span>
         <button
+          type="button"
           onClick={() => handleQuantityChange(product.quantity + 1)}
           className={styles.quantityButton}
         >
           +
         </button>
       </div>
-      <button onClick={handleRemove} className={styles.removeButton}>
+      <button
+        type="button"
+        onClick={handleRemove}
+        className={styles.removeButton}
+      >
         Remover
       </button>
     </div>

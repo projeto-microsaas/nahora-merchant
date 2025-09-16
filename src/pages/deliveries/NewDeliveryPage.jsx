@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/ui/button';
@@ -26,19 +26,26 @@ const NewDeliveryPage = () => {
       order: { products: [], instructions: '', total: 0 },
       scheduledAt: '',
     },
-    mode: "onChange", // Validação em tempo real
+    mode: "onChange",
   });
+
   const navigate = useNavigate();
   const { handleSubmit, reset, watch, setValue } = methods;
 
   const selectedProducts = watch('order.products') || [];
   const total = selectedProducts.reduce((sum, product) => sum + (product.price * (product.quantity || 1)), 0);
 
-  // Notificação de falha no WebSocket
-  socket.on('connect_error', (err) => {
-    console.error('Falha na conexão WebSocket:', err.message);
-    toast.error('Não foi possível conectar ao servidor de notificações');
-  });
+  // adiciona listener de erro do socket (uma vez)
+  useEffect(() => {
+    const onConnectError = (err) => {
+      console.error('Falha na conexão WebSocket:', err?.message ?? err);
+      toast.error('Não foi possível conectar ao servidor de notificações');
+    };
+    socket.on('connect_error', onConnectError);
+    return () => {
+      socket.off('connect_error', onConnectError);
+    };
+  }, []);
 
   const onSubmit = async (data) => {
     try {
@@ -56,22 +63,23 @@ const NewDeliveryPage = () => {
         throw new Error('Um ou mais IDs de produtos são inválidos.');
       }
 
-      // Validação de scheduledAt corrigida
+      // Validação e conversão de scheduledAt (fallback)
       let scheduledAtIso = null;
       if (data.scheduledAt) {
+        // Mantive a lógica original — adicionando ':00' para garantir segundos quando necessário
         const scheduledDateLocal = new Date(data.scheduledAt + ':00');
         const nowLocal = new Date();
         console.log('Data agendada raw (local):', data.scheduledAt);
         console.log('Data agendada local:', scheduledDateLocal.toLocaleString());
         console.log('Data atual local:', nowLocal.toLocaleString());
         if (isNaN(scheduledDateLocal.getTime())) throw new Error('Data de agendamento inválida.');
-        
+
         const scheduledOnlyDate = new Date(scheduledDateLocal.getFullYear(), scheduledDateLocal.getMonth(), scheduledDateLocal.getDate());
         const nowOnlyDate = new Date(nowLocal.getFullYear(), nowLocal.getMonth(), nowLocal.getDate());
         if (scheduledOnlyDate < nowOnlyDate) {
           throw new Error('Data de agendamento deve ser futura ou atual.');
         }
-        
+
         scheduledAtIso = scheduledDateLocal.toISOString();
         console.log('Data agendada ISO final (UTC):', scheduledAtIso);
       }
@@ -81,7 +89,7 @@ const NewDeliveryPage = () => {
         throw new Error('Token de autenticação não encontrado.');
       }
 
-      // Decodificar JWT para merchantId
+      // Decodificar JWT para merchantId (fallback)
       let merchantId;
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
@@ -99,17 +107,17 @@ const NewDeliveryPage = () => {
         throw new Error('Um ou mais produtos não pertencem ao comerciante. Selecione produtos válidos.');
       }
 
+      const addressString = `${data.deliveryAddress.street}, ${data.deliveryAddress.number}, ${data.deliveryAddress.neighborhood}${data.deliveryAddress.apartment ? `, Apt ${data.deliveryAddress.apartment}` : ''}`.trim();
+
       const deliveryData = {
         customer: data.recipient.name.trim(),
         phone: data.recipient.phone.trim(),
-        address: `${data.deliveryAddress.street}, ${data.deliveryAddress.number}, ${data.deliveryAddress.neighborhood}${
-          data.deliveryAddress.apartment ? `, Apt ${data.deliveryAddress.apartment}` : ''
-        }`.trim(),
+        address: addressString,
         products: data.order.products.map((p) => p._id),
         instructions: data.order.instructions?.trim() || '',
         totalPrice: Number(total.toFixed(2)),
-        estimatedArrival: 15, // Número de minutos, conforme schema
-        merchantId: merchantId, // Obrigatório conforme schema
+        estimatedArrival: 15,
+        merchantId: merchantId,
         ...(scheduledAtIso && { scheduledAt: scheduledAtIso }),
       };
 
@@ -141,11 +149,10 @@ const NewDeliveryPage = () => {
     } catch (error) {
       console.error('Erro completo na requisição:', error);
       const errorMessage = error.response?.data?.message ||
-                          error.response?.data?.errors?.[0]?.message ||
-                          error.message;
+                           error.response?.data?.errors?.[0]?.message ||
+                           error.message;
       console.error('Resposta do servidor:', error.response?.data);
       console.error('Status:', error.response?.status);
-      // Exibe erros específicos de campos se o backend enviar
       if (error.response?.data?.errors) {
         Object.entries(error.response.data.errors).forEach(([field, msg]) => {
           toast.error(`${field}: ${msg.message || msg}`);
@@ -175,6 +182,7 @@ const NewDeliveryPage = () => {
                     </div>
                   </CardContent>
                 </Card>
+
                 <Card className={styles.card}>
                   <CardHeader className={styles.cardHeader}>
                     <CardTitle className={styles.cardTitle}>Endereço de Entrega</CardTitle>
@@ -186,6 +194,7 @@ const NewDeliveryPage = () => {
                     <ResidenceTypeSelector />
                   </CardContent>
                 </Card>
+
                 <Card className={styles.card}>
                   <CardHeader className={styles.cardHeader}>
                     <CardTitle className={styles.cardTitle}>Destinatário</CardTitle>
@@ -194,19 +203,31 @@ const NewDeliveryPage = () => {
                     <RecipientInfo />
                   </CardContent>
                 </Card>
+
                 <Card className={styles.fullWidthCard}>
                   <CardHeader className={styles.cardHeader}>
                     <CardTitle className={styles.cardTitle}>Detalhes do Pedido</CardTitle>
                   </CardHeader>
                   <CardContent className={styles.cardContent}>
                     <div className={styles.orderDetails}>
-                      <ProductList />
+
+                      {/* =========================
+                          Aqui mantemos o ProductList INTEIRO como está,
+                          mas o envolvemos no wrapper que aplica o estilo.
+                          ========================= */}
+                      <div className={styles.futuristicTableWrapper}>
+                        {/* ProductList deve continuar funcionando exatamente como antes */}
+                        <ProductList />
+                      </div>
+
                       <OrderInfo />
+
                       <div className={styles.total}>
                         <p>
                           <strong>Total:</strong> R$ {total.toFixed(2)}
                         </p>
                       </div>
+
                       <div className={styles.formGroup}>
                         <Label htmlFor="scheduledAt">Agendar Para (opcional)</Label>
                         <Input
@@ -220,6 +241,7 @@ const NewDeliveryPage = () => {
                   </CardContent>
                 </Card>
               </div>
+
               <Button type="submit" className={styles.submitButton}>
                 Solicitar Entrega
               </Button>

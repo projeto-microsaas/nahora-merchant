@@ -12,45 +12,52 @@ const AddProductPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const API_URL = 'http://localhost:5000/api/products';
+
+  // Buscar produtos cadastrados
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       setError(null);
       try {
         const token = localStorage.getItem('authToken');
-        if (!token) {
-          throw new Error('Token de autenticação não encontrado.');
-        }
-        const response = await fetch('http://localhost:5000/api/products', {
+        if (!token) throw new Error('Token de autenticação não encontrado.');
+
+        const response = await fetch(API_URL, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
           },
         });
+
         if (!response.ok) {
-          throw new Error('Erro ao buscar produtos');
+          const errData = await response.json();
+          throw new Error(errData.message || 'Erro ao buscar produtos');
         }
+
         const data = await response.json();
         console.log('Produtos carregados:', data);
         setProducts(data);
-      } catch (error) {
-        console.error('Erro ao buscar produtos:', error);
+      } catch (err) {
+        console.error('Erro ao buscar produtos:', err);
         setError('Não foi possível carregar os produtos.');
       } finally {
         setLoading(false);
       }
     };
+
     fetchProducts();
   }, []);
 
+  // Criar novo produto
   const onSubmit = async (data) => {
     try {
+      if (!data.name || !data.price) throw new Error('Nome e preço são obrigatórios.');
+
       const token = localStorage.getItem('authToken');
-      if (!token) {
-        throw new Error('Token de autenticação não encontrado.');
-      }
-      console.log('Dados do formulário:', data); // Log para depuração
-      const response = await fetch('http://localhost:5000/api/products', {
+      if (!token) throw new Error('Token de autenticação não encontrado.');
+
+      const response = await fetch(API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -62,41 +69,43 @@ const AddProductPage = () => {
           category: data.category || 'Sem Categoria',
         }),
       });
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Erro ao criar produto');
+        const errData = await response.json();
+        throw new Error(errData.message || 'Erro ao criar produto');
       }
-      const result = await response.json();
-      console.log('Produto criado:', result);
-      setProducts([...products, result]);
+
+      const newProduct = await response.json();
+      setProducts([...products, newProduct]);
       reset();
       alert('Produto criado com sucesso!');
-    } catch (error) {
-      console.error('Erro ao criar produto:', error);
-      alert(`Erro ao criar produto: ${error.message}. Verifique o console para mais detalhes.`);
+    } catch (err) {
+      console.error('Erro ao criar produto:', err);
+      alert(`Erro ao criar produto: ${err.message}`);
     }
   };
 
+  // Deletar produto
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem('authToken');
-      if (!token) {
-        throw new Error('Token de autenticação não encontrado.');
-      }
-      const response = await fetch(`http://localhost:5000/api/products/${id}`, {
+      if (!token) throw new Error('Token de autenticação não encontrado.');
+
+      const response = await fetch(`${API_URL}/${id}`, {
         method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
+        headers: { 'Authorization': `Bearer ${token}` },
       });
+
       if (!response.ok) {
-        throw new Error('Erro ao excluir produto');
+        const errData = await response.json();
+        throw new Error(errData.message || 'Erro ao excluir produto');
       }
+
       setProducts(products.filter(p => p._id !== id));
       alert('Produto excluído com sucesso!');
-    } catch (error) {
-      console.error('Erro ao excluir produto:', error);
-      alert(`Erro ao excluir produto: ${error.message}.`);
+    } catch (err) {
+      console.error('Erro ao excluir produto:', err);
+      alert(`Erro ao excluir produto: ${err.message}`);
     }
   };
 
@@ -106,6 +115,8 @@ const AddProductPage = () => {
   return (
     <div className={styles.pageContainer}>
       <h1 className={styles.pageTitle}>Gerenciar Produtos</h1>
+
+      {/* Adicionar Produto */}
       <Card className={styles.card}>
         <CardHeader>
           <CardTitle>Adicionar Novo Produto</CardTitle>
@@ -126,7 +137,7 @@ const AddProductPage = () => {
               <input
                 type="number"
                 step="0.01"
-                {...register('price', { required: 'Preço é obrigatório', min: 0.01, max: 10000 })}
+                {...register('price', { required: 'Preço é obrigatório', min: 0.01 })}
                 className={styles.input}
                 placeholder="Ex.: 10.50"
               />
@@ -144,6 +155,8 @@ const AddProductPage = () => {
           </form>
         </CardContent>
       </Card>
+
+      {/* Produtos Cadastrados */}
       <Card className={styles.card}>
         <CardHeader>
           <CardTitle>Produtos Cadastrados</CardTitle>
@@ -153,7 +166,7 @@ const AddProductPage = () => {
             <ul className={styles.productList}>
               {products.map((product) => (
                 <li key={product._id} className={styles.productItem}>
-                  <span>{product.name} - R${product.price} ({product.category})</span>
+                  <span>{product.name} - R${product.price.toFixed(2)} ({product.category})</span>
                   <Button
                     onClick={() => handleDelete(product._id)}
                     className={styles.deleteButton}

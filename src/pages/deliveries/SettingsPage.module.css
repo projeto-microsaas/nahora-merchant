@@ -1,41 +1,50 @@
+/* ===== Reset básico ===== */
 html, body {
   margin: 0;
   padding: 0;
+  font-family: 'Inter', system-ui, sans-serif;
   height: 100%;
+  background-color: #f1f5f9;
   overflow: hidden;
 }
+
 .dashboardLayout {
+  display: flex;
+  flex-direction: column;
   width: 100vw;
   height: 100vh;
-  background-color: red;
-  box-sizing: border-box;
-  overflow: hidden; /* evita scroller */
+  overflow: hidden;
 }
-.main {
-  height: 100%;
+
+.mainContent {
+  flex: 1;
   padding: 2rem;
-  box-sizing: border-box;
-  overflow: auto; /* scroll interno se necessário */
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
 }
 
+.mainContent::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
 
-
-
-
-
+/* ===== Header ===== */
 .header {
   margin-bottom: 2rem;
 }
 
 .title {
   font-size: 2rem;
-  font-weight: bold;
+  font-weight: 700;
+  color: #111827;
 }
 
 .subtitle {
-  color: #666;
+  font-size: 1rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
 }
 
+/* ===== Tabs ===== */
 .tabs {
   width: 100%;
 }
@@ -46,33 +55,58 @@ html, body {
   margin-bottom: 1rem;
 }
 
-.tabContent {
-  padding: 1rem 0;
+.tabsTrigger {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: rgba(255, 115, 22, 0.1);
+  color: #f97316;
+  transition: all 0.3s ease;
 }
 
+.tabsTrigger[data-state="active"] {
+  background: #f97316;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(249, 115, 22, 0.3);
+}
+
+/* ===== Cards ===== */
 .card {
   width: 100%;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  border: 1px solid rgba(229, 231, 235, 0.5);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
 }
 
 .cardHeader {
-  padding: 1rem;
+  padding: 1rem 1.25rem;
 }
 
 .cardTitle {
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 700;
+  color: #111827;
 }
 
 .cardDescription {
-  color: #666;
+  font-size: 0.875rem;
+  color: #6b7280;
 }
 
 .cardContent {
-  padding: 1rem;
+  padding: 1rem 1.25rem;
 }
 
+/* ===== Formulários ===== */
 .grid {
   display: grid;
   gap: 1rem;
@@ -87,19 +121,28 @@ html, body {
 
 .saveButton {
   grid-column: span 2;
-  width: fit-content;
+  background-color: #f97316;
+  color: #fff;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.saveButton:hover {
+  background: linear-gradient(90deg, #ff7a00, #f97316);
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
 }
 
 .error {
-  color: #dc3545;
+  color: #dc2626;
   margin-top: 1rem;
 }
 
 .success {
-  color: #28a745;
+  color: #10b981;
   margin-top: 1rem;
 }
 
+/* ===== Notificações ===== */
 .notificationSection {
   display: flex;
   flex-direction: column;
@@ -114,8 +157,9 @@ html, body {
 
 .notificationTitle {
   font-size: 1.2rem;
-  font-weight: bold;
+  font-weight: 600;
   margin-bottom: 0.5rem;
+  color: #111827;
 }
 
 .switchGroup {
@@ -126,44 +170,12 @@ html, body {
 }
 
 .switchLabel {
-  font-size: 1rem;
+  font-size: 0.95rem;
+  color: #111827;
+  font-weight: 500;
 }
 
-.switchCustom {
-  width: 42px;
-  height: 24px;
-  background-color: #ccc;
-  border-radius: 12px;
-  position: relative;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.switchCustom[aria-checked="true"] {
-  background-color: #4caf50;
-}
-
-.switchCustom .Thumb {
-  width: 20px;
-  height: 20px;
-  background-color: white;
-  border-radius: 50%;
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  transition: transform 0.2s;
-}
-
-.switchCustom[aria-checked="true"] .Thumb {
-  transform: translateX(18px);
-}
-
-.buttonGroup {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
+/* ===== Pagamentos ===== */
 .paymentSection {
   display: flex;
   flex-direction: column;
@@ -174,37 +186,40 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  background: rgba(255,255,255,0.85);
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.paymentItem:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.08);
 }
 
 .paymentTitle {
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-weight: 600;
+  color: #111827;
 }
 
 .paymentDescription {
-  color: #666;
+  color: #6b7280;
 }
 
+/* Cards de métodos de pagamento */
 .cardItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0.5rem 1rem;
   margin-bottom: 0.5rem;
+  border-radius: 8px;
+  background: #f9fafb;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.03);
 }
 
-.cardForm {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.separator {
-  border: none;
-  border-top: 1px solid #e5e7eb;
-  margin: 1rem 0;
-}
-
+/* ===== Histórico ===== */
 .historySection {
   display: flex;
   flex-direction: column;
@@ -212,12 +227,33 @@ html, body {
 }
 
 .historyItem {
-  padding: 0.5rem;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 0.5rem 1rem;
+  background: rgba(255,255,255,0.85);
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+  transition: all 0.3s ease;
+}
+
+.historyItem:hover {
+  transform: translateX(3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.06);
 }
 
 .noHistory {
-  color: #666;
-  text-align: center;
-  padding: 1rem;
+  color: #6b7280;
+}
+
+/* ===== Responsividade ===== */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .notificationGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .saveButton {
+    width: 100%;
+  }
 }
