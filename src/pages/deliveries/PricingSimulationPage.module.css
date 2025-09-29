@@ -1,0 +1,235 @@
+/* Pricing Simulation Page Styles */
+.pageTitle {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #1f2937;
+}
+
+.pageDescription {
+  color: #666;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.simulationTable {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.tableHeader {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tableTitle {
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.tableDescription {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.tableContent {
+  padding: 1.5rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableHeaderRow {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tableHeaderCell {
+  text-align: left;
+  padding: 0.75rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.tableRow {
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.tableCell {
+  padding: 0.75rem;
+  font-weight: 500;
+}
+
+.categoryBadge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.categorySmall {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.categoryMedium {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.categoryLarge {
+  background-color: #fecaca;
+  color: #dc2626;
+}
+
+.priceTotal {
+  font-weight: 600;
+  color: #16a34a;
+}
+
+.pricePlatform {
+  color: #ea580c;
+}
+
+.priceDriver {
+  color: #7c3aed;
+}
+
+.statusBadge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  border: 1px solid #16a34a;
+  color: #16a34a;
+  background-color: transparent;
+}
+
+.explanationSection {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.explanationHeader {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.explanationTitle {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.explanationContent {
+  padding: 1.5rem;
+}
+
+.explanationGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.explanationSectionTitle {
+  font-weight: 600;
+  font-size: 1.125rem;
+  margin-bottom: 0.75rem;
+}
+
+.explanationSectionTitleBlue {
+  color: #2563eb;
+}
+
+.explanationSectionTitleGreen {
+  color: #16a34a;
+}
+
+.explanationList {
+  list-style: none;
+  padding: 0;
+}
+
+.explanationListItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.explanationBadge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.explanationBadgeSmall {
+  background-color: #f3f4f6;
+}
+
+.explanationBadgeMedium {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.explanationBadgeLarge {
+  background-color: #fecaca;
+  color: #dc2626;
+}
+
+.explanationDot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+}
+
+.explanationDotOrange {
+  background-color: #ea580c;
+}
+
+.explanationDotPurple {
+  background-color: #7c3aed;
+}
+
+.formulaBox {
+  background: #dbeafe;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.formulaTitle {
+  font-weight: 600;
+  color: #1e40af;
+  margin-bottom: 0.5rem;
+}
+
+.formulaText {
+  color: #1e40af;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .pageTitle {
+    font-size: 1.5rem;
+  }
+  
+  .explanationGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tableContent {
+    padding: 1rem;
+  }
+  
+  .tableHeader {
+    padding: 1rem;
+  }
+}

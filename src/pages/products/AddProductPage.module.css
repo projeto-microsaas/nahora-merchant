@@ -177,3 +177,52 @@
   text-align: center;
   padding: 2rem;
 }
+
+/* ===== Seletor de categorias ===== */
+.categorySelector {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.categoryCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 0.5rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.75rem;
+  background: #f8f9fa;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.categoryCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.categoryCard.selected {
+  background: #fff7ed;
+  border-color: #ff7300;
+  box-shadow: 0 4px 12px rgba(255, 115, 0, 0.2);
+}
+
+.categoryIcon {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.categoryLabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.categoryCard.selected .categoryLabel {
+  color: #ff7300;
+  font-weight: 600;
+}

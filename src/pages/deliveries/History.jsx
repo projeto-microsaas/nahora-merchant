@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { SidebarProvider } from "../../components/ui/sidebar";
+import DashboardLayout from "../../components/layout/DashboardLayout";
 import { Button } from "../../components/ui/button";
 import DeliveryHistoryTable from "../../components/dashboard/DeliveryHistoryTable";
 import { Link } from "react-router-dom";
 import styles from "./History.module.css";
-import AppSidebar from "../../components/layout/AppSidebar";
 import { Search } from "lucide-react";
 
 const History = () => {
@@ -72,59 +71,65 @@ const History = () => {
     }
   };
 
-  if (loading) return <div className={styles.loading}>Carregando...</div>;
-  if (error) return <div className={styles.error}>Erro: {error}</div>;
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <div className={styles.loading}>Carregando...</div>
+      </DashboardLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <DashboardLayout>
+        <div className={styles.error}>Erro: {error}</div>
+      </DashboardLayout>
+    );
+  }
 
   return (
-    <SidebarProvider>
-      <div className={styles.dashboardLayout}>
-        <AppSidebar />
-        <main className={styles.mainContent}>
-          <header className={styles.header}>
-            <div>
-              <h1 className={styles.title}>Histórico de Entregas</h1>
-              <p className={styles.subtitle}>
-                Visualize o histórico completo das suas entregas.
-              </p>
-            </div>
-            <Link to="/new-delivery" className={styles.newDeliveryButton}>
-              Nova Entrega
-            </Link>
-          </header>
+    <DashboardLayout>
+      <header className={styles.pageHeader}>
+        <div className={styles.headerContent}>
+          <h1>Histórico de Entregas</h1>
+          <p>Visualize o histórico completo das suas entregas.</p>
+        </div>
+        <Link to="/new-delivery" className={styles.newDeliveryButton}>
+          Nova Entrega
+        </Link>
+      </header>
 
-          {/* Campo de busca */}
-          <div className={styles.searchContainer}>
-            <Search className={styles.searchIcon} />
-            <input
-              type="search"
-              placeholder="Buscar no histórico por cliente, endereço ou ID..."
-              className={styles.searchInput}
-              value={searchTerm}
-              onChange={handleSearch}
-            />
-          </div>
-
-          {/* Tabela */}
-          <DeliveryHistoryTable deliveries={deliveries} />
-
-          {/* Paginação */}
-          {total > limit && (
-            <div className={styles.pagination}>
-              <Button onClick={() => handlePageChange(page - 1)} disabled={page === 1}>
-                Anterior
-              </Button>
-              <span>{`Página ${page} de ${Math.ceil(total / limit)}`}</span>
-              <Button
-                onClick={() => handlePageChange(page + 1)}
-                disabled={page === Math.ceil(total / limit)}
-              >
-                Próxima
-              </Button>
-            </div>
-          )}
-        </main>
+      {/* Campo de busca */}
+      <div className={styles.searchContainer}>
+        <Search className={styles.searchIcon} />
+        <input
+          type="search"
+          placeholder="Buscar no histórico por cliente, endereço ou ID..."
+          className={styles.searchInput}
+          value={searchTerm}
+          onChange={handleSearch}
+        />
       </div>
-    </SidebarProvider>
+
+      {/* Tabela */}
+      <DeliveryHistoryTable deliveries={deliveries} />
+
+      {/* Paginação */}
+      {total > limit && (
+        <div className={styles.pagination}>
+          <Button onClick={() => handlePageChange(page - 1)} disabled={page === 1}>
+            Anterior
+          </Button>
+          <span>{`Página ${page} de ${Math.ceil(total / limit)}`}</span>
+          <Button
+            onClick={() => handlePageChange(page + 1)}
+            disabled={page === Math.ceil(total / limit)}
+          >
+            Próxima
+          </Button>
+        </div>
+      )}
+    </DashboardLayout>
   );
 };
 

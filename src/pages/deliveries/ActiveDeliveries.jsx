@@ -51,34 +51,33 @@ const ActiveDeliveries = () => {
 
   return (
     <DashboardLayout>
-      <main className={styles.main}>
-        {/* Cabeçalho */}
-        <div className={styles.headerContent}>
-          <div>
-            <h1 className={styles.pageTitle}>Entregas Ativas</h1>
-            <p className={styles.pageSubtitle}>
-              Acompanhe todas as suas entregas em andamento.
-            </p>
-          </div>
-          <Link to="/new-delivery" className={styles.newDeliveryButton}>
-            Nova Entrega
-          </Link>
+      {/* Cabeçalho */}
+      <div className={styles.headerContent}>
+        <div>
+          <h1 className={styles.pageTitle}>Entregas Ativas</h1>
+          <p className={styles.pageSubtitle}>
+            Acompanhe todas as suas entregas em andamento.
+          </p>
         </div>
+        <Link to="/new-delivery" className={styles.newDeliveryButton}>
+          Nova Entrega
+        </Link>
+      </div>
 
-        {/* Barra de Pesquisa */}
-        <div className={styles.searchContainer}>
-          <Search className={styles.searchIcon} />
-          <input
-            type="search"
-            placeholder="Buscar entregas por cliente, endereço ou ID..."
-            className={styles.searchInput}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
+      {/* Barra de Pesquisa */}
+      <div className={styles.searchContainer}>
+        <Search className={styles.searchIcon} />
+        <input
+          type="search"
+          placeholder="Buscar entregas por cliente, endereço ou ID..."
+          className={styles.searchInput}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
 
-        {/* Grid de Entregas */}
-        <div className={styles.deliveriesGrid}>
+      {/* Grid de Entregas */}
+      <div className={styles.deliveriesGrid}>
           {loading && <div className={styles.loading}>Carregando...</div>}
           {error && <div className={styles.error}>{error}</div>}
           {!loading && !error && filteredDeliveries.length === 0 && (
@@ -134,8 +133,7 @@ const ActiveDeliveries = () => {
               </CardContent>
             </Card>
           ))}
-        </div>
-      </main>
+      </div>
     </DashboardLayout>
   );
 };

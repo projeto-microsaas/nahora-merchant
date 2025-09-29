@@ -3,14 +3,30 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
+import DashboardLayout from '../../components/layout/DashboardLayout';
 import styles from './AddProductPage.module.css';
 
 const AddProductPage = () => {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm();
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState('');
+
+  // Categorias com ícones
+  const categories = {
+    'Alimento': { icon: '🍽️', color: '#FF6B6B' },
+    'Bebida': { icon: '🥤', color: '#4ECDC4' },
+    'Eletrônico': { icon: '📱', color: '#45B7D1' },
+    'Roupa': { icon: '👕', color: '#96CEB4' },
+    'Casa': { icon: '🏠', color: '#FFEAA7' },
+    'Saúde': { icon: '💊', color: '#DDA0DD' },
+    'Livro': { icon: '📚', color: '#98D8C8' },
+    'Esporte': { icon: '⚽', color: '#F7DC6F' },
+    'Beleza': { icon: '💄', color: '#BB8FCE' },
+    'Outros': { icon: '📦', color: '#85C1E9' }
+  };
 
   const API_URL = 'http://localhost:5000/api/products';
 
@@ -66,7 +82,8 @@ const AddProductPage = () => {
         body: JSON.stringify({
           name: data.name,
           price: parseFloat(data.price),
-          category: data.category || 'Sem Categoria',
+          category: data.category || 'Outros',
+          icon: data.category ? categories[data.category]?.icon || '📦' : '📦',
         }),
       });
 
@@ -113,7 +130,7 @@ const AddProductPage = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className={styles.pageContainer}>
+    <DashboardLayout>
       <h1 className={styles.pageTitle}>Gerenciar Produtos</h1>
 
       {/* Adicionar Produto */}
@@ -145,11 +162,24 @@ const AddProductPage = () => {
             </div>
             <div className={styles.formGroup}>
               <label>Categoria</label>
-              <input
-                {...register('category')}
-                className={styles.input}
-                placeholder="Ex.: Alimento, Eletrônico"
-              />
+              <div className={styles.categorySelector}>
+                {Object.entries(categories).map(([category, { icon, color }]) => (
+                  <div
+                    key={category}
+                    className={`${styles.categoryCard} ${selectedCategory === category ? styles.selected : ''}`}
+                    onClick={() => {
+                      setSelectedCategory(category);
+                      setValue('category', category);
+                    }}
+                    style={{ borderColor: selectedCategory === category ? color : '#e5e7eb' }}
+                  >
+                    <div className={styles.categoryIcon} style={{ color }}>
+                      {icon}
+                    </div>
+                    <div className={styles.categoryLabel}>{category}</div>
+                  </div>
+                ))}
+              </div>
             </div>
             <Button type="submit" className={styles.submitButton}>Cadastrar Produto</Button>
           </form>
@@ -181,7 +211,7 @@ const AddProductPage = () => {
           )}
         </CardContent>
       </Card>
-    </div>
+    </DashboardLayout>
   );
 };
 

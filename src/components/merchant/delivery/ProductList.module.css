@@ -5,26 +5,89 @@
 }
 
 .searchContainer {
-  position: relative;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 1rem;
+  border: 1px solid #e9ecef;
+}
+
+.searchWrapper {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
 }
 
 .searchInput {
   width: 100%;
-  padding: 0.5rem 2rem 0.5rem 2.5rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.375rem;
-  background-color: white;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  background-color: #f1f3f4;
+  border: 2px solid #e5e7eb;
+  border-radius: 1rem;
+  color: #374151;
   font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+.searchInput:hover {
+  border-color: #ff7300;
+  background-color: white;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #ff7300;
+  box-shadow: 0 0 0 3px rgba(255, 115, 0, 0.1);
+  background-color: white;
+}
+
+.searchInput::placeholder {
+  color: #9ca3af;
 }
 
 .searchIcon {
   position: absolute;
   left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
   width: 1rem;
   height: 1rem;
-  color: #FF7300;
+}
+
+.cartButton {
+  padding: 0.75rem;
+  background-color: #ff7300;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(255, 115, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3rem;
+  height: 3rem;
+}
+
+.cartButton:hover {
+  background-color: #e56a00;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 115, 0, 0.4);
+}
+
+.cartButton:active {
+  transform: translateY(0);
+}
+
+.cartIcon {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 /* Ajuste para a lista de produtos dentro do card */
@@ -48,9 +111,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem;
+  padding: 1rem 1.25rem;
   background-color: white;
   border-bottom: 1px solid #e5e7eb;
+  transition: background-color 0.2s ease;
+}
+
+.productCard:hover {
+  background-color: #f9fafb;
 }
 
 .productCard:last-child {
@@ -82,19 +150,60 @@
   border-radius: 0.375rem;
 }
 
+.productActions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
 .addButton {
-  padding: 0.25rem 0.75rem;
+  padding: 0.5rem 1rem;
   background-color: #FF7300;
   color: white;
   border: none;
-  border-radius: 0.375rem;
+  border-radius: 0.75rem;
   font-size: 0.875rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(255, 115, 0, 0.3);
 }
 
 .addButton:hover {
   background-color: #e56a00;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(255, 115, 0, 0.4);
+}
+
+.addButton:active {
+  transform: translateY(0);
+}
+
+.deleteButton {
+  padding: 0.5rem;
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  height: 2.5rem;
+}
+
+.deleteButton:hover {
+  background-color: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(239, 68, 68, 0.4);
+}
+
+.deleteButton:active {
+  transform: translateY(0);
 }
 
 .emptyState {
@@ -107,6 +216,8 @@
 .cartItems {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 1rem;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 2px solid #f3f4f6;
 }

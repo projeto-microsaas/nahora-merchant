@@ -5,8 +5,9 @@ import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs";
 import { Separator } from "../../components/ui/separator";
-import { Switch } from "../../components/ui/switch"; // Importação corrigida via index.jsx
-import { Checkbox } from "../../components/ui/checkbox"; // Alternativa
+import { Switch } from "../../components/ui/switch";
+import { Checkbox } from "../../components/ui/checkbox";
+import { User, Shield, Store, Bell, CreditCard, History, Save, Eye, EyeOff, Plus, Trash2 } from "lucide-react";
 import styles from "./SettingsPage.module.css";
 import React, { useState, useEffect, useRef } from "react";
 import axios from "../../lib/axios";
@@ -291,261 +292,587 @@ const SettingsPage = () => {
         <h1 className={styles.title}>Configurações</h1>
         <p className={styles.subtitle}>Gerencie suas preferências e dados da conta.</p>
       </div>
+      
       <Tabs defaultValue="profile" className={styles.tabs}>
         <TabsList className={styles.tabsList}>
-          <TabsTrigger value="profile">Perfil</TabsTrigger>
-          <TabsTrigger value="security">Segurança</TabsTrigger>
-          <TabsTrigger value="business">Loja</TabsTrigger>
-          <TabsTrigger value="notifications">Notificações</TabsTrigger>
-          <TabsTrigger value="payment">Pagamentos</TabsTrigger>
-          <TabsTrigger value="history">Histórico</TabsTrigger>
+          <TabsTrigger value="profile" className={styles.tabTrigger}>
+            <User className={styles.tabIcon} />
+            Perfil
+          </TabsTrigger>
+          <TabsTrigger value="security" className={styles.tabTrigger}>
+            <Shield className={styles.tabIcon} />
+            Segurança
+          </TabsTrigger>
+          <TabsTrigger value="business" className={styles.tabTrigger}>
+            <Store className={styles.tabIcon} />
+            Loja
+          </TabsTrigger>
+          <TabsTrigger value="notifications" className={styles.tabTrigger}>
+            <Bell className={styles.tabIcon} />
+            Notificações
+          </TabsTrigger>
+          <TabsTrigger value="payment" className={styles.tabTrigger}>
+            <CreditCard className={styles.tabIcon} />
+            Pagamentos
+          </TabsTrigger>
+          <TabsTrigger value="history" className={styles.tabTrigger}>
+            <History className={styles.tabIcon} />
+            Histórico
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="profile" className={styles.tabContent}>
           <Card className={styles.card}>
-            <CardHeader>
-              <CardTitle>Informações Pessoais</CardTitle>
-              <CardDescription>Atualize suas informações pessoais.</CardDescription>
+            <CardHeader className={styles.cardHeader}>
+              <CardTitle className={styles.cardTitle}>
+                <User className={styles.titleIcon} />
+                Informações Pessoais
+              </CardTitle>
+              <CardDescription>Atualize suas informações pessoais e dados de contato.</CardDescription>
             </CardHeader>
             <CardContent className={styles.cardContent}>
-              <form onSubmit={saveProfile} className={styles.grid}>
-                <div className={styles.formGroup}>
-                  <Label htmlFor="name">Nome</Label>
-                  <Input id="name" value={profile.name} onChange={(e) => setProfile({ ...profile, name: e.target.value })} />
+              <form onSubmit={saveProfile} className={styles.form}>
+                <div className={styles.formGrid}>
+                  <div className={styles.formGroup}>
+                    <Label htmlFor="name" className={styles.label}>Nome Completo</Label>
+                    <Input 
+                      id="name" 
+                      value={profile.name} 
+                      onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+                      className={styles.input}
+                      placeholder="Digite seu nome completo"
+                    />
+                  </div>
+                  <div className={styles.formGroup}>
+                    <Label htmlFor="email" className={styles.label}>Email</Label>
+                    <Input 
+                      id="email" 
+                      type="email" 
+                      value={profile.email} 
+                      onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+                      className={styles.input}
+                      placeholder="seu@email.com"
+                    />
+                  </div>
+                  <div className={styles.formGroup}>
+                    <Label htmlFor="phone" className={styles.label}>Telefone</Label>
+                    <Input 
+                      id="phone" 
+                      value={profile.phone} 
+                      onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
+                      className={styles.input}
+                      placeholder="(11) 99999-9999"
+                    />
+                  </div>
+                  <div className={styles.formGroup}>
+                    <Label htmlFor="cpf" className={styles.label}>CPF</Label>
+                    <Input 
+                      id="cpf" 
+                      value={profile.cpf} 
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setProfile({ ...profile, cpf: value });
+                        if (value && !validateCPF(value)) setError("CPF inválido");
+                        else if (error === "CPF inválido") setError("");
+                      }}
+                      className={styles.input}
+                      placeholder="000.000.000-00"
+                    />
+                  </div>
                 </div>
-                <div className={styles.formGroup}>
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" value={profile.email} onChange={(e) => setProfile({ ...profile, email: e.target.value })} />
+                <div className={styles.formActions}>
+                  <Button type="submit" className={styles.saveButton}>
+                    <Save className={styles.buttonIcon} />
+                    Salvar Alterações
+                  </Button>
                 </div>
-                <div className={styles.formGroup}>
-                  <Label htmlFor="phone">Telefone</Label>
-                  <Input id="phone" value={profile.phone} onChange={(e) => setProfile({ ...profile, phone: e.target.value })} />
-                </div>
-                <div className={styles.formGroup}>
-                  <Label htmlFor="cpf">CPF</Label>
-                  <Input id="cpf" value={profile.cpf} onChange={(e) => {
-                    const value = e.target.value;
-                    setProfile({ ...profile, cpf: value });
-                    if (value && !validateCPF(value)) setError("CPF inválido");
-                    else if (error === "CPF inválido") setError("");
-                  }} />
-                </div>
-                <Button type="submit" className={styles.saveButton}>Salvar Alterações</Button>
               </form>
-              {error && <p className={styles.error}>{error}</p>}
-              {success && <p className={styles.success}>{success}</p>}
+              {error && <div className={styles.errorMessage}>{error}</div>}
+              {success && <div className={styles.successMessage}>{success}</div>}
             </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="security" className={styles.tabContent}>
           <Card className={styles.card}>
-            <CardHeader>
-              <CardTitle>Segurança</CardTitle>
-              <CardDescription>Gerencie sua senha e segurança da conta.</CardDescription>
+            <CardHeader className={styles.cardHeader}>
+              <CardTitle className={styles.cardTitle}>
+                <Shield className={styles.titleIcon} />
+                Segurança da Conta
+              </CardTitle>
+              <CardDescription>Gerencie sua senha e configurações de segurança.</CardDescription>
             </CardHeader>
             <CardContent className={styles.cardContent}>
-              <form onSubmit={saveSecurity} className={styles.grid}>
-                <div className={styles.formGroup}>
-                  <Label htmlFor="current-password">Senha Atual</Label>
-                  <Input id="current-password" type="password" value={security.current} onChange={(e) => setSecurity({ ...security, current: e.target.value })} />
+              <form onSubmit={saveSecurity} className={styles.form}>
+                <div className={styles.formGrid}>
+                  <div className={styles.formGroup}>
+                    <Label htmlFor="current-password" className={styles.label}>Senha Atual</Label>
+                    <div className={styles.passwordInput}>
+                      <Input 
+                        id="current-password" 
+                        type="password" 
+                        value={security.current} 
+                        onChange={(e) => setSecurity({ ...security, current: e.target.value })}
+                        className={styles.input}
+                        placeholder="Digite sua senha atual"
+                      />
+                    </div>
+                  </div>
+                  <div className={styles.formGroup}>
+                    <Label htmlFor="new-password" className={styles.label}>Nova Senha</Label>
+                    <div className={styles.passwordInput}>
+                      <Input 
+                        id="new-password" 
+                        type="password" 
+                        value={security.newPassword} 
+                        onChange={(e) => setSecurity({ ...security, newPassword: e.target.value })}
+                        className={styles.input}
+                        placeholder="Digite sua nova senha"
+                      />
+                    </div>
+                  </div>
+                  <div className={styles.formGroup}>
+                    <Label htmlFor="confirm-password" className={styles.label}>Confirmar Nova Senha</Label>
+                    <div className={styles.passwordInput}>
+                      <Input 
+                        id="confirm-password" 
+                        type="password" 
+                        value={security.confirmPassword} 
+                        onChange={(e) => setSecurity({ ...security, confirmPassword: e.target.value })}
+                        className={styles.input}
+                        placeholder="Confirme sua nova senha"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className={styles.formGroup}>
-                  <Label htmlFor="new-password">Nova Senha</Label>
-                  <Input id="new-password" type="password" value={security.newPassword} onChange={(e) => setSecurity({ ...security, newPassword: e.target.value })} />
+                <div className={styles.formActions}>
+                  <Button type="submit" className={styles.saveButton}>
+                    <Shield className={styles.buttonIcon} />
+                    Atualizar Senha
+                  </Button>
                 </div>
-                <div className={styles.formGroup}>
-                  <Label htmlFor="confirm-password">Confirmar Nova Senha</Label>
-                  <Input id="confirm-password" type="password" value={security.confirmPassword} onChange={(e) => setSecurity({ ...security, confirmPassword: e.target.value })} />
-                </div>
-                <Button type="submit" className={styles.saveButton}>Atualizar Senha</Button>
               </form>
-              {error && <p className={styles.error}>{error}</p>}
-              {success && <p className={styles.success}>{success}</p>}
+              {error && <div className={styles.errorMessage}>{error}</div>}
+              {success && <div className={styles.successMessage}>{success}</div>}
             </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="business" className={styles.tabContent}>
           <Card className={styles.card}>
-            <CardHeader>
-              <CardTitle>Informações da Loja</CardTitle>
-              <CardDescription>Atualize as informações do seu estabelecimento.</CardDescription>
+            <CardHeader className={styles.cardHeader}>
+              <CardTitle className={styles.cardTitle}>
+                <Store className={styles.titleIcon} />
+                Informações da Loja
+              </CardTitle>
+              <CardDescription>Atualize as informações do seu estabelecimento comercial.</CardDescription>
             </CardHeader>
             <CardContent className={styles.cardContent}>
-              <form onSubmit={saveBusiness} className={styles.grid}>
-                <div className={styles.formGroup}>
-                  <Label htmlFor="business-name">Nome da Loja</Label>
-                  <Input id="business-name" value={business.name} onChange={(e) => setBusiness({ ...business, name: e.target.value })} />
+              <form onSubmit={saveBusiness} className={styles.form}>
+                <div className={styles.formGrid}>
+                  <div className={styles.formGroup}>
+                    <Label htmlFor="business-name" className={styles.label}>Nome da Loja</Label>
+                    <Input 
+                      id="business-name" 
+                      value={business.name} 
+                      onChange={(e) => setBusiness({ ...business, name: e.target.value })}
+                      className={styles.input}
+                      placeholder="Digite o nome do seu estabelecimento"
+                    />
+                  </div>
+                  <div className={styles.formGroup}>
+                    <Label htmlFor="business-type" className={styles.label}>Tipo de Comércio</Label>
+                    <Input 
+                      id="business-type" 
+                      value={business.type} 
+                      onChange={(e) => setBusiness({ ...business, type: e.target.value })}
+                      className={styles.input}
+                      placeholder="Ex: Restaurante, Loja, Farmácia..."
+                    />
+                  </div>
+                  <div className={styles.formGroup}>
+                    <Label htmlFor="cnpj" className={styles.label}>CNPJ</Label>
+                    <Input 
+                      id="cnpj" 
+                      value={business.cnpj} 
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setBusiness({ ...business, cnpj: value });
+                        if (value && !validateCNPJ(value)) setError("CNPJ inválido");
+                        else if (error === "CNPJ inválido") setError("");
+                      }}
+                      className={styles.input}
+                      placeholder="00.000.000/0000-00"
+                    />
+                  </div>
+                  <div className={styles.formGroup}>
+                    <Label htmlFor="business-phone" className={styles.label}>Telefone Comercial</Label>
+                    <Input 
+                      id="business-phone" 
+                      value={business.phone} 
+                      onChange={(e) => setBusiness({ ...business, phone: e.target.value })}
+                      className={styles.input}
+                      placeholder="(11) 99999-9999"
+                    />
+                  </div>
+                  <div className={styles.formGroup}>
+                    <Label htmlFor="address" className={styles.label}>Endereço Completo</Label>
+                    <Input 
+                      id="address" 
+                      value={business.address} 
+                      onChange={(e) => setBusiness({ ...business, address: e.target.value })}
+                      className={styles.input}
+                      placeholder="Rua, número, bairro, cidade"
+                    />
+                  </div>
                 </div>
-                <div className={styles.formGroup}>
-                  <Label htmlFor="business-type">Tipo de Comércio</Label>
-                  <Input id="business-type" value={business.type} onChange={(e) => setBusiness({ ...business, type: e.target.value })} />
+                <div className={styles.formActions}>
+                  <Button type="submit" className={styles.saveButton}>
+                    <Store className={styles.buttonIcon} />
+                    Salvar Informações
+                  </Button>
                 </div>
-                <div className={styles.formGroup}>
-                  <Label htmlFor="cnpj">CNPJ</Label>
-                  <Input id="cnpj" value={business.cnpj} onChange={(e) => {
-                    const value = e.target.value;
-                    setBusiness({ ...business, cnpj: value });
-                    if (value && !validateCNPJ(value)) setError("CNPJ inválido");
-                    else if (error === "CNPJ inválido") setError("");
-                  }} />
-                </div>
-                <div className={styles.formGroup}>
-                  <Label htmlFor="business-phone">Telefone Comercial</Label>
-                  <Input id="business-phone" value={business.phone} onChange={(e) => setBusiness({ ...business, phone: e.target.value })} />
-                </div>
-                <div className={styles.formGroup}>
-                  <Label htmlFor="address">Endereço Completo</Label>
-                  <Input id="address" value={business.address} onChange={(e) => setBusiness({ ...business, address: e.target.value })} />
-                </div>
-                <Button type="submit" className={styles.saveButton}>Salvar Alterações</Button>
               </form>
-              {error && <p className={styles.error}>{error}</p>}
-              {success && <p className={styles.success}>{success}</p>}
+              {error && <div className={styles.errorMessage}>{error}</div>}
+              {success && <div className={styles.successMessage}>{success}</div>}
             </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="notifications" className={styles.tabContent}>
           <Card className={styles.card}>
-            <CardHeader>
-              <CardTitle>Preferências de Notificação</CardTitle>
+            <CardHeader className={styles.cardHeader}>
+              <CardTitle className={styles.cardTitle}>
+                <Bell className={styles.titleIcon} />
+                Preferências de Notificação
+              </CardTitle>
               <CardDescription>Configure como e quando você deseja receber notificações.</CardDescription>
             </CardHeader>
             <CardContent className={styles.cardContent}>
-              <form onSubmit={saveNotifications} className={styles.notificationSection}>
+              <form onSubmit={saveNotifications} className={styles.form}>
                 <div className={styles.notificationGrid}>
-                  <div>
-                    <h4 className={styles.notificationTitle}>Notificações por Email</h4>
-                    <div className={styles.switchGroup}>
-                      <Label htmlFor="email-new-delivery" className={styles.switchLabel}>Novas solicitações de entrega</Label>
-                      <Switch id="email-new-delivery" checked={notifications.emailNewDelivery} onCheckedChange={handleSwitchChange("emailNewDelivery")} className={styles.switchCustom} />
+                  {/* Notificações por Email */}
+                  <div className={styles.notificationSection}>
+                    <div className={styles.sectionHeader}>
+                      <div className={styles.sectionIcon}>📧</div>
+                      <h4 className={styles.sectionTitle}>Notificações por Email</h4>
                     </div>
-                    <div className={styles.switchGroup}>
-                      <Label htmlFor="email-status-changes" className={styles.switchLabel}>Mudanças de status nas entregas</Label>
-                      <Switch id="email-status-changes" checked={notifications.emailStatusChanges} onCheckedChange={handleSwitchChange("emailStatusChanges")} className={styles.switchCustom} />
-                    </div>
-                    <div className={styles.switchGroup}>
-                      <Label htmlFor="email-delivered" className={styles.switchLabel}>Confirmação de entrega realizada</Label>
-                      <Switch id="email-delivered" checked={notifications.emailDelivered} onCheckedChange={handleSwitchChange("emailDelivered")} className={styles.switchCustom} />
-                    </div>
-                    <div className={styles.switchGroup}>
-                      <Label htmlFor="email-payment" className={styles.switchLabel}>Recibos e informações de pagamento</Label>
-                      <Switch id="email-payment" checked={notifications.emailPayment} onCheckedChange={handleSwitchChange("emailPayment")} className={styles.switchCustom} />
+                    <div className={styles.notificationOptions}>
+                      <div className={styles.notificationOption}>
+                        <div className={styles.optionInfo}>
+                          <Label htmlFor="email-new-delivery" className={styles.optionLabel}>
+                            Novas solicitações de entrega
+                          </Label>
+                          <p className={styles.optionDescription}>Receba um email quando uma nova entrega for solicitada</p>
+                        </div>
+                        <Switch 
+                          id="email-new-delivery" 
+                          checked={notifications.emailNewDelivery} 
+                          onCheckedChange={handleSwitchChange("emailNewDelivery")} 
+                          className={styles.notificationSwitch}
+                        />
+                      </div>
+                      
+                      <div className={styles.notificationOption}>
+                        <div className={styles.optionInfo}>
+                          <Label htmlFor="email-status-changes" className={styles.optionLabel}>
+                            Mudanças de status nas entregas
+                          </Label>
+                          <p className={styles.optionDescription}>Seja notificado sobre atualizações no status das entregas</p>
+                        </div>
+                        <Switch 
+                          id="email-status-changes" 
+                          checked={notifications.emailStatusChanges} 
+                          onCheckedChange={handleSwitchChange("emailStatusChanges")} 
+                          className={styles.notificationSwitch}
+                        />
+                      </div>
+                      
+                      <div className={styles.notificationOption}>
+                        <div className={styles.optionInfo}>
+                          <Label htmlFor="email-delivered" className={styles.optionLabel}>
+                            Confirmação de entrega realizada
+                          </Label>
+                          <p className={styles.optionDescription}>Receba confirmação quando uma entrega for concluída</p>
+                        </div>
+                        <Switch 
+                          id="email-delivered" 
+                          checked={notifications.emailDelivered} 
+                          onCheckedChange={handleSwitchChange("emailDelivered")} 
+                          className={styles.notificationSwitch}
+                        />
+                      </div>
+                      
+                      <div className={styles.notificationOption}>
+                        <div className={styles.optionInfo}>
+                          <Label htmlFor="email-payment" className={styles.optionLabel}>
+                            Recibos e informações de pagamento
+                          </Label>
+                          <p className={styles.optionDescription}>Receba comprovantes e informações sobre pagamentos</p>
+                        </div>
+                        <Switch 
+                          id="email-payment" 
+                          checked={notifications.emailPayment} 
+                          onCheckedChange={handleSwitchChange("emailPayment")} 
+                          className={styles.notificationSwitch}
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div>
-                    <h4 className={styles.notificationTitle}>Notificações por SMS</h4>
-                    <div className={styles.switchGroup}>
-                      <Label htmlFor="sms-new-delivery" className={styles.switchLabel}>Novas solicitações de entrega</Label>
-                      <Switch id="sms-new-delivery" checked={notifications.smsNewDelivery} onCheckedChange={handleSwitchChange("smsNewDelivery")} className={styles.switchCustom} />
+
+                  {/* Notificações por SMS */}
+                  <div className={styles.notificationSection}>
+                    <div className={styles.sectionHeader}>
+                      <div className={styles.sectionIcon}>📱</div>
+                      <h4 className={styles.sectionTitle}>Notificações por SMS</h4>
                     </div>
-                    <div className={styles.switchGroup}>
-                      <Label htmlFor="sms-status-changes" className={styles.switchLabel}>Mudanças de status nas entregas</Label>
-                      <Switch id="sms-status-changes" checked={notifications.smsStatusChanges} onCheckedChange={handleSwitchChange("smsStatusChanges")} className={styles.switchCustom} />
-                    </div>
-                    <div className={styles.switchGroup}>
-                      <Label htmlFor="sms-delivered" className={styles.switchLabel}>Confirmação de entrega realizada</Label>
-                      <Switch id="sms-delivered" checked={notifications.smsDelivered} onCheckedChange={handleSwitchChange("smsDelivered")} className={styles.switchCustom} />
+                    <div className={styles.notificationOptions}>
+                      <div className={styles.notificationOption}>
+                        <div className={styles.optionInfo}>
+                          <Label htmlFor="sms-new-delivery" className={styles.optionLabel}>
+                            Novas solicitações de entrega
+                          </Label>
+                          <p className={styles.optionDescription}>Receba SMS quando uma nova entrega for solicitada</p>
+                        </div>
+                        <Switch 
+                          id="sms-new-delivery" 
+                          checked={notifications.smsNewDelivery} 
+                          onCheckedChange={handleSwitchChange("smsNewDelivery")} 
+                          className={styles.notificationSwitch}
+                        />
+                      </div>
+                      
+                      <div className={styles.notificationOption}>
+                        <div className={styles.optionInfo}>
+                          <Label htmlFor="sms-status-changes" className={styles.optionLabel}>
+                            Mudanças de status nas entregas
+                          </Label>
+                          <p className={styles.optionDescription}>Seja notificado via SMS sobre atualizações importantes</p>
+                        </div>
+                        <Switch 
+                          id="sms-status-changes" 
+                          checked={notifications.smsStatusChanges} 
+                          onCheckedChange={handleSwitchChange("smsStatusChanges")} 
+                          className={styles.notificationSwitch}
+                        />
+                      </div>
+                      
+                      <div className={styles.notificationOption}>
+                        <div className={styles.optionInfo}>
+                          <Label htmlFor="sms-delivered" className={styles.optionLabel}>
+                            Confirmação de entrega realizada
+                          </Label>
+                          <p className={styles.optionDescription}>Receba SMS de confirmação quando uma entrega for concluída</p>
+                        </div>
+                        <Switch 
+                          id="sms-delivered" 
+                          checked={notifications.smsDelivered} 
+                          onCheckedChange={handleSwitchChange("smsDelivered")} 
+                          className={styles.notificationSwitch}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div className={styles.buttonGroup}>
-                  <Button type="submit" className={styles.saveButton}>Salvar Preferências</Button>
+                
+                <div className={styles.formActions}>
+                  <Button type="submit" className={styles.saveButton}>
+                    <Bell className={styles.buttonIcon} />
+                    Salvar Preferências
+                  </Button>
                 </div>
               </form>
-              {error && <p className={styles.error}>{error}</p>}
-              {success && <p className={styles.success}>{success}</p>}
+              {error && <div className={styles.errorMessage}>{error}</div>}
+              {success && <div className={styles.successMessage}>{success}</div>}
             </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="payment" className={styles.tabContent}>
           <Card className={styles.card}>
-            <CardHeader>
-              <CardTitle>Pagamentos</CardTitle>
-              <CardDescription>Configure suas informações de pagamento.</CardDescription>
+            <CardHeader className={styles.cardHeader}>
+              <CardTitle className={styles.cardTitle}>
+                <CreditCard className={styles.titleIcon} />
+                Configurações de Pagamento
+              </CardTitle>
+              <CardDescription>Gerencie seus métodos de pagamento e planos de assinatura.</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className={styles.cardContent}>
               <div className={styles.paymentSection}>
-                <div className={styles.paymentItem}>
-                  <div>
-                    <h4 className={styles.paymentTitle}>Plano atual</h4>
-                    <p className={styles.paymentDescription}>{payment.plan}</p>
+                {/* Plano Atual */}
+                <div className={styles.paymentCard}>
+                  <div className={styles.paymentCardHeader}>
+                    <div className={styles.paymentIcon}>💳</div>
+                    <div className={styles.paymentInfo}>
+                      <h4 className={styles.paymentTitle}>Plano Atual</h4>
+                      <p className={styles.paymentDescription}>{payment.plan}</p>
+                    </div>
                   </div>
-                  <Button variant="outline" onClick={savePayment}>Alterar Plano</Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={savePayment}
+                    className={styles.paymentButton}
+                  >
+                    Alterar Plano
+                  </Button>
                 </div>
-                <Separator className={styles.separator} />
-                <div className={styles.paymentItem}>
-                  <div>
-                    <h4 className={styles.paymentTitle}>Métodos de pagamento</h4>
-                    {payment.cards.map((card) => (
-                      <div key={card.cardLast4} className={styles.cardItem}>
-                        <p className={styles.paymentDescription}>Cartão terminando em {card.cardLast4}</p>
-                        <Button variant="outline" onClick={() => removeCard(card.cardLast4)}>Remover</Button>
-                      </div>
-                    ))}
+
+                {/* Métodos de Pagamento */}
+                <div className={styles.paymentCard}>
+                  <div className={styles.paymentCardHeader}>
+                    <div className={styles.paymentIcon}>💳</div>
+                    <div className={styles.paymentInfo}>
+                      <h4 className={styles.paymentTitle}>Métodos de Pagamento</h4>
+                      <p className={styles.paymentDescription}>Gerencie seus cartões cadastrados</p>
+                    </div>
                   </div>
-                  <form onSubmit={addCard} className={styles.cardForm}>
-                    <div className={styles.formGroup}>
-                      <Label htmlFor="card-number">Número do Cartão (16 dígitos)</Label>
-                      <Input id="card-number" value={payment.newCard.number} onChange={(e) => setPayment({ ...payment, newCard: { ...payment.newCard, number: e.target.value } })} />
+                  
+                  {/* Cartões existentes */}
+                  {payment.cards.length > 0 && (
+                    <div className={styles.cardsList}>
+                      {payment.cards.map((card) => (
+                        <div key={card.cardLast4} className={styles.cardItem}>
+                          <div className={styles.cardInfo}>
+                            <div className={styles.cardIcon}>💳</div>
+                            <span className={styles.cardText}>Cartão terminando em {card.cardLast4}</span>
+                          </div>
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => removeCard(card.cardLast4)}
+                            className={styles.removeButton}
+                          >
+                            <Trash2 className={styles.buttonIcon} />
+                            Remover
+                          </Button>
+                        </div>
+                      ))}
                     </div>
-                    <div className={styles.formGroup}>
-                      <Label htmlFor="card-expiry">Validade (MM/AA)</Label>
-                      <Input id="card-expiry" value={payment.newCard.expiry} onChange={(e) => setPayment({ ...payment, newCard: { ...payment.newCard, expiry: e.target.value } })} />
+                  )}
+
+                  {/* Formulário para adicionar cartão */}
+                  <form onSubmit={addCard} className={styles.form}>
+                    <div className={styles.formGrid}>
+                      <div className={styles.formGroup}>
+                        <Label htmlFor="card-number" className={styles.label}>Número do Cartão</Label>
+                        <Input 
+                          id="card-number" 
+                          value={payment.newCard.number} 
+                          onChange={(e) => setPayment({ ...payment, newCard: { ...payment.newCard, number: e.target.value } })}
+                          className={styles.input}
+                          placeholder="0000 0000 0000 0000"
+                        />
+                      </div>
+                      <div className={styles.formGroup}>
+                        <Label htmlFor="card-expiry" className={styles.label}>Validade</Label>
+                        <Input 
+                          id="card-expiry" 
+                          value={payment.newCard.expiry} 
+                          onChange={(e) => setPayment({ ...payment, newCard: { ...payment.newCard, expiry: e.target.value } })}
+                          className={styles.input}
+                          placeholder="MM/AA"
+                        />
+                      </div>
+                      <div className={styles.formGroup}>
+                        <Label htmlFor="card-cvv" className={styles.label}>CVV</Label>
+                        <Input 
+                          id="card-cvv" 
+                          value={payment.newCard.cvv} 
+                          onChange={(e) => setPayment({ ...payment, newCard: { ...payment.newCard, cvv: e.target.value } })}
+                          className={styles.input}
+                          placeholder="000"
+                        />
+                      </div>
+                      <div className={styles.formGroup}>
+                        <Label htmlFor="card-last4" className={styles.label}>Últimos 4 Dígitos</Label>
+                        <Input 
+                          id="card-last4" 
+                          value={payment.newCard.cardLast4} 
+                          onChange={(e) => setPayment({ ...payment, newCard: { ...payment.newCard, cardLast4: e.target.value } })}
+                          className={styles.input}
+                          placeholder="0000"
+                        />
+                      </div>
                     </div>
-                    <div className={styles.formGroup}>
-                      <Label htmlFor="card-cvv">CVV (3 dígitos)</Label>
-                      <Input id="card-cvv" value={payment.newCard.cvv} onChange={(e) => setPayment({ ...payment, newCard: { ...payment.newCard, cvv: e.target.value } })} />
+                    <div className={styles.formActions}>
+                      <Button type="submit" className={styles.saveButton}>
+                        <Plus className={styles.buttonIcon} />
+                        Adicionar Cartão
+                      </Button>
                     </div>
-                    <div className={styles.formGroup}>
-                      <Label htmlFor="card-last4">Últimos 4 Dígitos</Label>
-                      <Input id="card-last4" value={payment.newCard.cardLast4} onChange={(e) => setPayment({ ...payment, newCard: { ...payment.newCard, cardLast4: e.target.value } })} />
-                    </div>
-                    <Button type="submit" className={styles.saveButton}>Adicionar Cartão</Button>
                   </form>
                 </div>
-                <div className={styles.buttonGroup}>
-                  <Button variant="outline" disabled>Ver Faturas</Button>
+
+                {/* Ações adicionais */}
+                <div className={styles.paymentActions}>
+                  <Button variant="outline" disabled className={styles.actionButton}>
+                    <CreditCard className={styles.buttonIcon} />
+                    Ver Faturas
+                  </Button>
                 </div>
               </div>
-              {error && <p className={styles.error}>{error}</p>}
-              {success && <p className={styles.success}>{success}</p>}
+              {error && <div className={styles.errorMessage}>{error}</div>}
+              {success && <div className={styles.successMessage}>{success}</div>}
             </CardContent>
           </Card>
         </TabsContent>
         <TabsContent value="history" className={styles.tabContent}>
           <Card className={styles.card}>
-            <CardHeader>
-              <CardTitle>Histórico de Alterações</CardTitle>
-              <CardDescription>Veja o registro das suas últimas alterações.</CardDescription>
+            <CardHeader className={styles.cardHeader}>
+              <CardTitle className={styles.cardTitle}>
+                <History className={styles.titleIcon} />
+                Histórico de Alterações
+              </CardTitle>
+              <CardDescription>Veja o registro das suas últimas alterações no sistema.</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className={styles.cardContent}>
               <div className={styles.historySection}>
                 {history.length > 0 ? (
-                  history.map((item) => (
-                    <div key={item._id || `history-${item.action}-${item.date}`} className={styles.historyItem}>
-                      <p><strong>{item.action}</strong> - {new Date(item.date).toLocaleString()}</p>
-                    </div>
-                  ))
+                  <div className={styles.historyList}>
+                    {history.map((item) => (
+                      <div key={item._id || `history-${item.action}-${item.date}`} className={styles.historyItem}>
+                        <div className={styles.historyIcon}>📝</div>
+                        <div className={styles.historyContent}>
+                          <p className={styles.historyAction}>{item.action}</p>
+                          <p className={styles.historyDate}>{new Date(item.date).toLocaleString()}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 ) : (
-                  <p className={styles.noHistory}>Nenhum histórico disponível.</p>
+                  <div className={styles.emptyState}>
+                    <div className={styles.emptyIcon}>📋</div>
+                    <p className={styles.emptyMessage}>Nenhum histórico disponível.</p>
+                  </div>
                 )}
               </div>
             </CardContent>
           </Card>
+          
           <Card className={styles.card}>
-            <CardHeader>
-              <CardTitle>Notificações Recebidas</CardTitle>
-              <CardDescription>Veja as últimas notificações recebidas.</CardDescription>
+            <CardHeader className={styles.cardHeader}>
+              <CardTitle className={styles.cardTitle}>
+                <Bell className={styles.titleIcon} />
+                Notificações Recebidas
+              </CardTitle>
+              <CardDescription>Veja as últimas notificações recebidas no sistema.</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className={styles.cardContent}>
               <div className={styles.historySection}>
                 {notificationsList.length > 0 ? (
-                  notificationsList.map((item) => (
-                    <div key={item.id || `notification-${item.message}-${item.timestamp}`} className={styles.historyItem}>
-                      <p><strong>{item.type.toUpperCase()}</strong>: {item.message} - {item.timestamp}</p>
-                    </div>
-                  ))
+                  <div className={styles.historyList}>
+                    {notificationsList.map((item) => (
+                      <div key={item.id || `notification-${item.message}-${item.timestamp}`} className={styles.historyItem}>
+                        <div className={styles.historyIcon}>🔔</div>
+                        <div className={styles.historyContent}>
+                          <p className={styles.historyAction}>
+                            <span className={styles.notificationType}>{item.type.toUpperCase()}</span>: {item.message}
+                          </p>
+                          <p className={styles.historyDate}>{item.timestamp}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 ) : (
-                  <p className={styles.noHistory}>Nenhuma notificação recebida.</p>
+                  <div className={styles.emptyState}>
+                    <div className={styles.emptyIcon}>🔕</div>
+                    <p className={styles.emptyMessage}>Nenhuma notificação recebida.</p>
+                  </div>
                 )}
               </div>
             </CardContent>

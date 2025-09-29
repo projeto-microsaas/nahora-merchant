@@ -16,15 +16,20 @@
 
 /* ===== Estrutura da Sidebar ===== */
 .sidebar {
-  background-color: var(--sidebar-background);
-  color: var(--sidebar-foreground);
-  border-right: 1px solid var(--sidebar-border);
-  width: 16rem;
-  height: 100vh;             /* ocupa toda a altura da tela */
-  display: flex;
-  flex-direction: column;    /* empilha header, content e footer */
-  position: sticky;
-  top: 0;
+  background-color: var(--sidebar-background) !important;
+  color: var(--sidebar-foreground) !important;
+  width: 16rem !important;
+  min-height: 100vh !important;
+  height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  position: fixed !important;
+  left: 0 !important;
+  top: 0 !important;
+  z-index: 9999 !important;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1) !important;
+  transform: translateZ(0) !important; /* Força aceleração de hardware */
+  will-change: transform !important; /* Otimização de performance */
 }
 
 /* ===== Cabeçalho ===== */
@@ -93,15 +98,8 @@
 
 /* ===== Rodapé - Logout ===== */
 .sidebarFooter {
-  background-color: var(--sidebar-background);
-  color: var(--sidebar-foreground);
-  border-right: 1px solid var(--sidebar-border);
-  width: 16rem;
-  height: 100vh;             /* ocupa toda a altura da tela */
-  display: flex;
-  flex-direction: column;    /* empilha header, content e footer */
-  position: sticky;
-  top: 0;
+  padding: 1rem;
+  margin-top: auto;          /* empurra para o final */
 }
 
 .logoutButton {
@@ -137,4 +135,14 @@
 .logoutIcon:hover {
   color: #ffffff; /* branco */
   transform: translateY(-1px);
+}
+
+/* ===== Responsividade ===== */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    min-height: auto;
+  }
 }

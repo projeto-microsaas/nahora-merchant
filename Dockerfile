@@ -1,5 +1,8 @@
 # Usar uma imagem base com Node.js
-FROM node:18
+FROM alpine:latest
+
+# Instalar Node.js
+RUN apk add --no-cache nodejs npm
 
 # Definir o diretório de trabalho dentro do contêiner
 WORKDIR /app

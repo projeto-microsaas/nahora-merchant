@@ -42,7 +42,7 @@ const DeliveriesDashboard = () => {
         ] = await Promise.all([
           axios.get('/api/stats', config),
           axios.get('/api/system-status', config),
-          axios.get('/api/active-deliveries', config),
+          axios.get('/api/deliveries/active-deliveries', config),
         ]);
 
         setStats(statsResponse.data);

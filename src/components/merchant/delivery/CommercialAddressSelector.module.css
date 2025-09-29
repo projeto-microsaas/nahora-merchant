@@ -1,0 +1,208 @@
+/* Container principal */
+.container {
+  width: 100%;
+  margin: 1rem 0;
+}
+
+/* Header com título e botão */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  flex: 1;
+  text-align: center;
+}
+
+/* Botão discreto de gerenciamento */
+.manageButton {
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  color: #6b7280;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.manageButton:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  color: #374151;
+}
+
+.settingsIcon {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+/* Grid responsivo para os cards */
+.addressGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+}
+
+/* Mensagens de estado */
+.loadingMessage,
+.noAddressesMessage {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+  background: #f9fafb;
+  border: 1px dashed #d1d5db;
+  border-radius: 0.5rem;
+}
+
+.noAddressesMessage small {
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+
+/* Card de endereço */
+.addressCard {
+  position: relative;
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.addressCard:hover {
+  border-color: #ff7300;
+  box-shadow: 0 4px 12px rgba(255, 115, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.addressCard.selected {
+  border-color: #ff7300;
+  background: #fff7ed;
+  box-shadow: 0 4px 12px rgba(255, 115, 0, 0.2);
+}
+
+/* Input radio invisível */
+.radioInput {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Conteúdo do card */
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.locationName {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.addressCard.selected .locationName {
+  color: #ff7300;
+}
+
+.addressText {
+  font-size: 0.875rem;
+  color: #6b7280;
+  line-height: 1.4;
+  margin-bottom: 0.25rem;
+}
+
+.complement {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.defaultBadge {
+  background: #10b981;
+  color: white;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-left: 0.5rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .addressGrid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .addressCard {
+    padding: 1rem;
+    min-height: 100px;
+  }
+  
+  .header {
+    margin-bottom: 0.75rem;
+  }
+  
+  .title {
+    font-size: 1rem;
+    text-align: left;
+  }
+  
+  .manageButton {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+  
+  .settingsIcon {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+  
+  .locationName {
+    font-size: 1rem;
+  }
+  
+  .addressText {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .addressCard {
+    padding: 0.875rem;
+    min-height: 90px;
+  }
+  
+  .locationName {
+    font-size: 0.95rem;
+  }
+  
+  .addressText {
+    font-size: 0.75rem;
+  }
+  
+  .complement {
+    font-size: 0.7rem;
+  }
+}

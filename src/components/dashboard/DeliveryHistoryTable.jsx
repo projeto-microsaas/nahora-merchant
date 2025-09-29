@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styles from "../../pages/deliveries/History.module.css";
+import styles from "./DeliveryHistoryTable.module.css";
 
 const DeliveryHistoryTable = ({ deliveries }) => {
   if (!deliveries || deliveries.length === 0) {

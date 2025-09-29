@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { 
   Package, 
   History, 
@@ -6,19 +7,10 @@ import {
   PlusCircle, 
   Settings, 
   LogOut, 
-  Bike
+  Bike,
+  DollarSign,
+  Calculator
 } from "lucide-react";
-import { 
-  Sidebar, 
-  SidebarContent, 
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarHeader,
-  SidebarFooter
-} from "@/components/ui/sidebar";
 import styles from "./AppSidebar.module.css";
 import { useNavigate } from "react-router-dom";
 
@@ -31,81 +23,78 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar className={styles.sidebar}>
+    <div 
+      className={styles.sidebar}
+      style={{
+        position: 'fixed',
+        left: 0,
+        top: 0,
+        width: '16rem',
+        height: '100vh',
+        zIndex: 9999,
+        backgroundColor: '#1a202c',
+        color: '#e2e8f0',
+        display: 'flex',
+        flexDirection: 'column',
+        boxShadow: '2px 0 10px rgba(0, 0, 0, 0.1)'
+      }}
+    >
       {/* Cabeçalho */}
-      <SidebarHeader className={styles.sidebarHeader}>
+      <div className={styles.sidebarHeader}>
         <div className={styles.logoContainer}>
           <Bike className={styles.logoIcon} />
           <span className={styles.logoText}>NaHora!</span>
         </div>
-      </SidebarHeader>
+      </div>
       
       {/* Conteúdo da Sidebar */}
-      <SidebarContent className={styles.sidebarContent}>
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu className={styles.menu}>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <a href="/deliveries" className={styles.menuItem}>
-                    <Home className={styles.menuIcon} />
-                    Visão Geral
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+      <div className={styles.sidebarContent}>
+        <div className={styles.menu}>
+          <Link to="/deliveries" className={styles.menuItem}>
+            <Home className={styles.menuIcon} />
+            Visão Geral
+          </Link>
 
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <a href="/active-deliveries" className={styles.menuItem}>
-                    <Package className={styles.menuIcon} />
-                    Entregas Ativas
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+          <Link to="/active-deliveries" className={styles.menuItem}>
+            <Package className={styles.menuIcon} />
+            Entregas Ativas
+          </Link>
 
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <a href="/history" className={styles.menuItem}>
-                    <History className={styles.menuIcon} />
-                    Histórico
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+          <Link to="/history" className={styles.menuItem}>
+            <History className={styles.menuIcon} />
+            Histórico
+          </Link>
 
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <a href="/new-delivery" className={styles.menuItem}>
-                    <PlusCircle className={styles.menuIcon} />
-                    Nova Entrega
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+          <Link to="/new-delivery" className={styles.menuItem}>
+            <PlusCircle className={styles.menuIcon} />
+            Nova Entrega
+          </Link>
 
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <a href="/settings" className={styles.menuItem}>
-                    <Settings className={styles.menuIcon} />
-                    Configurações
-                  </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
+          <Link to="/pricing" className={styles.menuItem}>
+            <DollarSign className={styles.menuIcon} />
+            Tabela de Preços
+          </Link>
 
-             {/* Rodapé - Logout */}
-      <SidebarFooter className={styles.sidebarFooter}>
+          <Link to="/pricing-simulation" className={styles.menuItem}>
+            <Calculator className={styles.menuIcon} />
+            Simulação de Preços
+          </Link>
+
+          <Link to="/settings" className={styles.menuItem}>
+            <Settings className={styles.menuIcon} />
+            Configurações
+          </Link>
+        </div>
+      </div>
+
+      {/* Rodapé - Logout */}
+      <div className={styles.sidebarFooter}>
         <button className={styles.logoutButton} onClick={handleLogout}>
           <LogOut className={styles.logoutIcon} />
           <span>Sair</span>
         </button>
-      </SidebarFooter>
-
-  
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-
-     
-    </Sidebar>
+      </div>
+    </div>
   );
 }
 
